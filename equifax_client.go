@@ -191,16 +191,16 @@ type NewApplicationResponse struct {
 }
 
 type OutputVector struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ outputVector"`
+	XMLName xml.Name `xml:"fps:outputVector"`
 	Credential
 	ApplicationID    string        `xml:"applicationid"`
 	ApplicationDate  Time          `xml:"applicationdate"`
 	ApplicantType    ApplicantType `xml:"applicanttype"`
-	ApplicantTypeNum string        `xml:"applicanttypenum"`
+	ApplicantTypeNum int64         `xml:"applicanttypenum"`
 }
 
 type OutputVectorResponse struct {
-	XMLName           xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ outputVectorResponse"`
+	XMLName           xml.Name `xml:"fps:outputVectorResponse"`
 	ApplicationID     string   `xml:"applicationid"`
 	Status            Status   `xml:"status"`
 	MainRules         string   `xml:"mainrules"`
@@ -210,7 +210,7 @@ type OutputVectorResponse struct {
 }
 
 type UpdateCreditStatus struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateCreditStatus"`
+	XMLName xml.Name `xml:"fps:updateCreditStatus"`
 	Credential
 	ApplicationID      string            `xml:"applicationid"`
 	ApplicationDate    Time              `xml:"applicationdate"`
@@ -222,13 +222,13 @@ type UpdateCreditStatus struct {
 }
 
 type UpdateCreditStatusResponse struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateCreditStatusResponse"`
+	XMLName       xml.Name `xml:"fps:updateCreditStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
 
 type UpdateFraudStatus struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateFraudStatus"`
+	XMLName xml.Name `xml:"fps:updateFraudStatus"`
 	Credential
 	ApplicationID              string                 `xml:"applicationid"`
 	ApplicationDate            Time                   `xml:"applicationdate"`
@@ -237,13 +237,13 @@ type UpdateFraudStatus struct {
 }
 
 type UpdateFraudStatusResponse struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateFraudStatusResponse"`
+	XMLName       xml.Name `fps:updateFraudStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
 
 type UpdateDefaultStatus struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateDefaultStatus"`
+	XMLName xml.Name `xml:"fps:updateDefaultStatus"`
 	Credential
 	ApplicationID      string        `xml:"applicationid"`
 	ApplicationDate    Time          `xml:"applicationdate"`
@@ -255,13 +255,13 @@ type UpdateDefaultStatus struct {
 }
 
 type UpdateDefaultStatusResponse struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateDefaultStatusResponse"`
+	XMLName       xml.Name `xml:"fps:updateDefaultStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
 
 type ProcessingApplication struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ processingApplication"`
+	XMLName xml.Name `xml:"fps:processingApplication"`
 	Credential
 	ApplicationID    string           `xml:"applicationid"`
 	ApplicationDate  Date             `xml:"applicationdate"`
@@ -271,13 +271,13 @@ type ProcessingApplication struct {
 }
 
 type ProcessingApplicationResponse struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ processingApplicationResponse"`
+	XMLName       xml.Name `xml:"fps:processingApplicationResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
 
 type DeleteApplication struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ deleteApplication"`
+	XMLName xml.Name `xml:"fps:deleteApplication"`
 	Credential
 	ApplicationID    string        `xml:"applicationid"`
 	ApplicationDate  Date          `xml:"applicationdate"`
@@ -286,7 +286,7 @@ type DeleteApplication struct {
 }
 
 type DeleteApplicationResponse struct {
-	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ deleteApplicationResponse"`
+	XMLName       xml.Name `xml:"fps:deleteApplicationResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
