@@ -806,35 +806,35 @@ const (
 	OriginalChannelType99 OriginalChannel = 99
 )
 
-type ProductSumCurrency string
+type SumCurrency string
 
-func (p ProductSumCurrency) ToString() string {
+func (p SumCurrency) ToString() string {
 	return string(p)
 }
 
 const (
 	// Американский доллар
-	ProductSumCurrencyType840 ProductSumCurrency = "840"
+	SumCurrencyType840 SumCurrency = "840"
 	// Американский доллар
-	ProductSumCurrencyTypeUSD ProductSumCurrency = "USD"
+	SumCurrencyTypeUSD SumCurrency = "USD"
 	// Рубль
-	ProductSumCurrencyType810 ProductSumCurrency = "810"
+	SumCurrencyType810 SumCurrency = "810"
 	// Рубль
-	ProductSumCurrencyTypeRUR ProductSumCurrency = "RUR"
+	SumCurrencyTypeRUR SumCurrency = "RUR"
 	// Рубль
-	ProductSumCurrencyTypeRUB ProductSumCurrency = "RUB"
+	SumCurrencyTypeRUB SumCurrency = "RUB"
 	// Евро
-	ProductSumCurrencyType978 ProductSumCurrency = "978"
+	SumCurrencyType978 SumCurrency = "978"
 	// Евро
-	ProductSumCurrencyTypeEUR ProductSumCurrency = "EUR"
+	SumCurrencyTypeEUR SumCurrency = "EUR"
 	// Швейцарский франк
-	ProductSumCurrencyType756 ProductSumCurrency = "756"
+	SumCurrencyType756 SumCurrency = "756"
 	// Швейцарский франк
-	ProductSumCurrencyTypeCHF ProductSumCurrency = "CHF"
+	SumCurrencyTypeCHF SumCurrency = "CHF"
 	// Японская йена
-	ProductSumCurrencyType392 ProductSumCurrency = "392"
+	SumCurrencyType392 SumCurrency = "392"
 	// Японская йена
-	ProductSumCurrencyTypeJPY ProductSumCurrency = "JPY"
+	SumCurrencyTypeJPY SumCurrency = "JPY"
 )
 
 type CollateralExistence uint32

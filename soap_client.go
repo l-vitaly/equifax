@@ -11,63 +11,18 @@ import (
 	"time"
 )
 
-type SOAPEnvelope struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Envelope"`
-	Header  *SOAPHeader
-	Body    SOAPBody
+type SOAPEnvelopeResponse struct {
+	XMLName xml.Name `xml:"Envelope"`
+	Body    SOAPBodyResponse
 }
 
-type SOAPHeader struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Header"`
-	Header  interface{}
-}
-
-type SOAPBody struct {
-	XMLName xml.Name    `xml:"http://schemas.xmlsoap.org/soap/envelope/ Body"`
+type SOAPBodyResponse struct {
+	XMLName xml.Name    `xml:"Body"`
 	Fault   *SOAPFault  `xml:",omitempty"`
 	Content interface{} `xml:",omitempty"`
 }
 
-type SOAPFault struct {
-	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ Fault"`
-	Code    string   `xml:"faultcode,omitempty"`
-	String  string   `xml:"faultstring,omitempty"`
-	Actor   string   `xml:"faultactor,omitempty"`
-	Detail  string   `xml:"detail,omitempty"`
-}
-
-type BasicAuth struct {
-	Login    string
-	Password string
-}
-
-type SOAPClient struct {
-	url       string
-	enableTLS bool
-	auth      *BasicAuth
-	header    interface{}
-	client    *http.Client
-}
-
-func NewSOAPClient(url string, enableTLS bool, timeout time.Duration, auth *BasicAuth) *SOAPClient {
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: enableTLS,
-		},
-		Dial: func(network, addr string) (net.Conn, error) {
-			return net.DialTimeout(network, addr, timeout)
-		},
-	}
-	client := &http.Client{Transport: tr}
-	return &SOAPClient{
-		url:       url,
-		enableTLS: enableTLS,
-		auth:      auth,
-		client:    client,
-	}
-}
-
-func (b *SOAPBody) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+func (b *SOAPBodyResponse) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	if b.Content == nil {
 		return xml.UnmarshalError("Content must be a pointer to a struct")
 	}
@@ -116,8 +71,69 @@ Loop:
 	return nil
 }
 
+type SOAPFault struct {
+	XMLName xml.Name `xml:"Fault"`
+	Code    string   `xml:"faultcode,omitempty"`
+	String  string   `xml:"faultstring,omitempty"`
+	Actor   string   `xml:"faultactor,omitempty"`
+	Detail  string   `xml:"detail,omitempty"`
+}
+
 func (f *SOAPFault) Error() string {
 	return f.String
+}
+
+type SOAPEnvelope struct {
+	XMLName xml.Name `xml:"soapenv:Envelope"`
+	Xsi     string   `xml:"xmlns:xsi,attr"`
+	Xsd     string   `xml:"xmlns:xsd,attr"`
+	Soapenv string   `xml:"xmlns:soapenv,attr"`
+	Fps     string   `xml:"xmlns:fps,attr"`
+	Header  *SOAPHeader
+	Body    SOAPBody
+}
+
+type SOAPHeader struct {
+	XMLName xml.Name `xml:"soapenv:Header"`
+	Header  interface{}
+}
+
+type SOAPBody struct {
+	XMLName xml.Name    `xml:"soapenv:Body"`
+	Content interface{} `xml:",omitempty"`
+}
+
+type BasicAuth struct {
+	Login    string
+	Password string
+}
+
+type SOAPClient struct {
+	url       string
+	enableTLS bool
+	auth      *BasicAuth
+	header    interface{}
+	client    *http.Client
+	debug     bool
+}
+
+func NewSOAPClient(url string, enableTLS bool, timeout time.Duration, auth *BasicAuth, debug bool) *SOAPClient {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{
+			InsecureSkipVerify: enableTLS,
+		},
+		Dial: func(network, addr string) (net.Conn, error) {
+			return net.DialTimeout(network, addr, timeout)
+		},
+	}
+	client := &http.Client{Transport: tr}
+	return &SOAPClient{
+		url:       url,
+		enableTLS: enableTLS,
+		auth:      auth,
+		client:    client,
+		debug:     debug,
+	}
 }
 
 func (s *SOAPClient) SetHeader(header interface{}) {
@@ -130,7 +146,9 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return err
 	}
 
-	log.Println(buffer.String())
+	if s.debug {
+		log.Println(buffer.String())
+	}
 
 	req, err := http.NewRequest("POST", s.url, buffer)
 	if err != nil {
@@ -161,7 +179,9 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return err
 	}
 
-	log.Println(string(rawBody))
+	if s.debug {
+		log.Println(string(rawBody))
+	}
 
 	respEnvelope, err := s.makeResponse(rawBody, response)
 	if err != nil {
@@ -177,7 +197,12 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 }
 
 func (s *SOAPClient) buildRequest(request interface{}) (*bytes.Buffer, error) {
-	envelope := SOAPEnvelope{}
+	envelope := SOAPEnvelope{
+		Xsi:     "http://schemas.xmlsoap.org/soap/envelope/",
+		Xsd:     "http://www.w3.org/2001/XMLSchema",
+		Soapenv: "http://schemas.xmlsoap.org/soap/envelope/",
+		Fps:     "http://example.org/FPSPartner",
+	}
 
 	if s.header != nil {
 		envelope.Header = &SOAPHeader{Header: s.header}
@@ -186,7 +211,7 @@ func (s *SOAPClient) buildRequest(request interface{}) (*bytes.Buffer, error) {
 	envelope.Body.Content = request
 
 	buffer := new(bytes.Buffer)
-	buffer.Write([]byte("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"))
+	buffer.Write([]byte(xml.Header))
 
 	encoder := xml.NewEncoder(buffer)
 
@@ -201,13 +226,13 @@ func (s *SOAPClient) buildRequest(request interface{}) (*bytes.Buffer, error) {
 	return buffer, nil
 }
 
-func (s *SOAPClient) makeResponse(rawBody []byte, response interface{}) (*SOAPEnvelope, error) {
+func (s *SOAPClient) makeResponse(rawBody []byte, response interface{}) (*SOAPEnvelopeResponse, error) {
 	if len(rawBody) == 0 {
 		log.Println("empty response")
 		return nil, nil
 	}
-	respEnvelope := new(SOAPEnvelope)
-	respEnvelope.Body = SOAPBody{Content: response}
+	respEnvelope := new(SOAPEnvelopeResponse)
+	respEnvelope.Body = SOAPBodyResponse{Content: response}
 	err := xml.Unmarshal(rawBody, respEnvelope)
 	if err != nil {
 		return nil, err

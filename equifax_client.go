@@ -5,319 +5,410 @@ import (
 	"time"
 )
 
+const RFC_TIME_EQUIFAX = "02.01.2006 15:04:05"
+const RFC_DATE_EQUIFAX = "02.01.2006"
+const SRT_EMPTY = "EMPTY"
+const SRT_NULL = "NULL"
+
+type EmptyString string
+
+func (t EmptyString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if t == "" {
+		e.EncodeElement(SRT_EMPTY, start)
+		return nil
+	}
+	e.EncodeElement((string)(t), start)
+	return nil
+}
+
+type NullString struct {
+	String string
+	Valid  bool
+}
+
+func (t NullString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if !t.Valid {
+		e.EncodeElement(SRT_NULL, start)
+		return nil
+	}
+	e.EncodeElement(t.String, start)
+	return nil
+}
+
+type Time struct {
+	time.Time
+}
+
+func (et *Time) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	e.EncodeElement(et.Format(RFC_TIME_EQUIFAX), start)
+	return nil
+}
+
+type Date struct {
+	time.Time
+}
+
+func (et *Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	if et.IsZero() {
+		emptyDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
+		e.EncodeElement(emptyDate.Format(RFC_DATE_EQUIFAX), start)
+		return nil
+	}
+	e.EncodeElement(et.Format(RFC_DATE_EQUIFAX), start)
+	return nil
+}
+
+type Credential struct {
+	Login     string `xml:"login"`
+	Password  string `xml:"password"`
+	PartnerID string `xml:"partnerid"`
+}
+
 type NewApplication struct {
-	XMLName                    xml.Name               `xml:"http://equifax.ru/FPSPartner newApplication"`
-	Login                      string                 `xml:"login,omitempty"`
-	Password                   string                 `xml:"password,omitempty"`
-	PartnerID                  string                 `xml:"partnerid,omitempty"`
-	ApplicationID              string                 `xml:"applicationid,omitempty"`
-	ApplicationDate            time.Time              `xml:"applicationdate,omitempty"`
-	PhotoID                    string                 `xml:"photoid,omitempty"`
-	LastName                   string                 `xml:"lastname,omitempty"`
-	FirstName                  string                 `xml:"firstname,omitempty"`
-	MiddleName                 string                 `xml:"middlename,omitempty"`
-	PastLastName               string                 `xml:"pastlastname,omitempty"`
-	Birthday                   time.Time              `xml:"birthday,omitempty"`
-	Birthplace                 string                 `xml:"birthplace,omitempty"`
-	DocType                    DocType                `xml:"doctype,omitempty"`
-	DocNo                      string                 `xml:"docno,omitempty"`
-	DocPlace                   string                 `xml:"docplace,omitempty"`
-	DocDate                    time.Time              `xml:"docdate,omitempty"`
-	DocCode                    string                 `xml:"doccode,omitempty"`
-	PastDocType                DocType                `xml:"pastdoctype,omitempty"`
-	PastDocNo                  string                 `xml:"pastdocno,omitempty"`
-	PastDocPlace               string                 `xml:"pastdocplace,omitempty"`
-	PastDocDate                time.Time              `xml:"pastdocdate,omitempty"`
-	Sex                        Sex                    `xml:"sex,omitempty"`
-	Citizenship                Citizenship            `xml:"citizenship,omitempty"`
-	INN                        string                 `xml:"inn,omitempty"`
-	PFR                        string                 `xml:"pfr,omitempty"`
-	DriverNo                   string                 `xml:"driverno,omitempty"`
-	Education                  Education              `xml:"education,omitempty"`
-	Marital                    Marital                `xml:"marital,omitempty"`
-	NumChildren                string                 `xml:"numchildren,omitempty"`
-	Email                      string                 `xml:"email,omitempty"`
-	HomePhone                  string                 `xml:"homephone,omitempty"`
-	MobilePhone                string                 `xml:"mobilephone,omitempty"`
-	LaCountry                  Citizenship            `xml:"la_country,omitempty"`
-	LaIndex                    string                 `xml:"la_index,omitempty"`
-	LaRegion                   string                 `xml:"la_region,omitempty"`
-	LaDistrict                 string                 `xml:"la_district,omitempty"`
-	LaCity                     string                 `xml:"la_city,omitempty"`
-	LaSettlement               string                 `xml:"la_settlement,omitempty"`
-	LaStreet                   string                 `xml:"la_street,omitempty"`
-	LaHouse                    string                 `xml:"la_house,omitempty"`
-	LaBuilding                 string                 `xml:"la_building,omitempty"`
-	LaStructure                string                 `xml:"la_structure,omitempty"`
-	LaApartment                string                 `xml:"la_apartment,omitempty"`
-	LaYears                    string                 `xml:"la_years,omitempty"`
-	LaMonth                    string                 `xml:"la_month,omitempty"`
-	LaDate                     time.Time              `xml:"la_date,omitempty"`
-	RaPhone                    string                 `xml:"ra_phone,omitempty"`
-	RaCountry                  Citizenship            `xml:"ra_country,omitempty"`
-	RaIndex                    string                 `xml:"ra_index,omitempty"`
-	RaRegion                   string                 `xml:"ra_region,omitempty"`
-	RaDistrict                 string                 `xml:"ra_district,omitempty"`
-	RaCity                     string                 `xml:"ra_city,omitempty"`
-	RaSettlement               string                 `xml:"ra_settlement,omitempty"`
-	RaStreet                   string                 `xml:"ra_street,omitempty"`
-	RaHouse                    string                 `xml:"ra_house,omitempty"`
-	RaBuilding                 string                 `xml:"ra_building,omitempty"`
-	RaStructure                string                 `xml:"ra_structure,omitempty"`
-	RaApartment                string                 `xml:"ra_apartment,omitempty"`
-	EmployerName               string                 `xml:"employername,omitempty"`
-	EmployerSize               EmployerSize           `xml:"employersize,omitempty"`
-	BusinessIndustry           BusinessIndustry       `xml:"businessindustry,omitempty"`
-	Position                   string                 `xml:"position,omitempty"`
-	EmploymentYear             string                 `xml:"employment_year,omitempty"`
-	EmploymentMonth            string                 `xml:"employment_month,omitempty"`
-	EmploymentDate             time.Time              `xml:"employment_date,omitempty"`
-	EmploymentINN              string                 `xml:"employment_inn,omitempty"`
-	IncomeProof                IncomeProof            `xml:"incomeproof,omitempty"`
-	MonthlyIncome              string                 `xml:"monthlyincome,omitempty"`
-	BaPhone                    string                 `xml:"ba_phone,omitempty"`
-	BaCountry                  Citizenship            `xml:"ba_country,omitempty"`
-	BaIndex                    string                 `xml:"ba_index,omitempty"`
-	BaRegion                   string                 `xml:"ba_region,omitempty"`
-	BaDistrict                 string                 `xml:"ba_district,omitempty"`
-	BaCity                     string                 `xml:"ba_city,omitempty"`
-	BaSettlement               string                 `xml:"ba_settlement,omitempty"`
-	BaStreet                   string                 `xml:"ba_street,omitempty"`
-	BaHouse                    string                 `xml:"ba_house,omitempty"`
-	BaBuilding                 string                 `xml:"ba_building,omitempty"`
-	BaStructure                string                 `xml:"ba_structure,omitempty"`
-	BaApartment                string                 `xml:"ba_apartment,omitempty"`
-	ProductType                ProductType            `xml:"producttype,omitempty"`
-	ProductName                string                 `xml:"productname,omitempty"`
-	OriginalChannel            OriginalChannel        `xml:"originalchannel,omitempty"`
-	ProductSumLimit            string                 `xml:"productsumlimit,omitempty"`
-	ProductSumCurrency         ProductSumCurrency     `xml:"productsumcurrency,omitempty"`
-	DownPaymentAmount          string                 `xml:"downpaymentamount,omitempty"`
-	CollateralExistence        CollateralExistence    `xml:"collateralexistence,omitempty"`
-	CollateralValue            string                 `xml:"collateralvalue,omitempty"`
-	PurchaseExistence          PurchaseExistence      `xml:"purchaseexistence,omitempty"`
-	PurchaseValue              string                 `xml:"purchasevalue,omitempty"`
-	PurchaseModel              string                 `xml:"purchasemodel,omitempty"`
-	OperatorCode               string                 `xml:"operator_code,omitempty"`
-	OperatorName               string                 `xml:"operator_name,omitempty"`
-	PosCode                    string                 `xml:"pos_code,omitempty"`
-	PosPhone                   string                 `xml:"pos_phone,omitempty"`
-	PosCountry                 Citizenship            `xml:"pos_country,omitempty"`
-	PosIndex                   string                 `xml:"pos_index,omitempty"`
-	PosRegion                  string                 `xml:"pos_region,omitempty"`
-	PosDistrict                string                 `xml:"pos_district,omitempty"`
-	PosCity                    string                 `xml:"pos_city,omitempty"`
-	PosSettlement              string                 `xml:"pos_settlement,omitempty"`
-	PosStreet                  string                 `xml:"pos_street,omitempty"`
-	PosHouse                   string                 `xml:"pos_house,omitempty"`
-	PosBuilding                string                 `xml:"pos_building,omitempty"`
-	PosStructure               string                 `xml:"pos_structure,omitempty"`
-	PosApartment               string                 `xml:"pos_apartment,omitempty"`
-	NewApplicant               NewApplicant           `xml:"newapplicant,omitempty"`
-	ApplicantType              ApplicantType          `xml:"applicanttype,omitempty"`
-	ApplicantTypeNum           string                 `xml:"applicanttypenum,omitempty"`
-	ResponseIsNeeded           ResponseIsNeeded       `xml:"responseisneeded,omitempty"`
-	ApplicationStatus          ApplicationStatus      `xml:"applicationstatus,omitempty"`
-	ApplicantID                string                 `xml:"applicantid,omitempty"`
-	TradeDate                  time.Time              `xml:"tradedate,omitempty"`
-	InitialSumLimit            string                 `xml:"initialsumlimit,omitempty"`
-	InitialSumCurrency         ProductSumCurrency     `xml:"initialsumcurrency,omitempty"`
-	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus,omitempty"`
-	ApplicationFraudStatusDesc string                 `xml:"applicationfraudstatusdescr,omitempty"`
-	DefaultStatus              DefaultStatus          `xml:"defaultstatus,omitempty"`
+	XMLName xml.Name `xml:"fps:newApplication"`
+	Credential
+	ApplicationID              string                 `xml:"applicationid"`
+	ApplicationDate            Time                   `xml:"applicationdate"`
+	PhotoID                    string                 `xml:"photoid"`
+	LastName                   string                 `xml:"lastname"`
+	FirstName                  string                 `xml:"firstname"`
+	MiddleName                 EmptyString            `xml:"middlename"`
+	PastLastName               NullString             `xml:"pastlastname"`
+	Birthday                   Date                   `xml:"birthday"`
+	Birthplace                 NullString             `xml:"birthplace"`
+	DocType                    DocType                `xml:"doctype"`
+	DocNo                      string                 `xml:"docno"`
+	DocPlace                   EmptyString            `xml:"docplace"`
+	DocDate                    Date                   `xml:"docdate"`
+	DocCode                    NullString             `xml:"doccode"`
+	PastDocType                DocType                `xml:"pastdoctype"`
+	PastDocNo                  NullString             `xml:"pastdocno"`
+	PastDocPlace               NullString             `xml:"pastdocplace"`
+	PastDocDate                Date                   `xml:"pastdocdate"`
+	Sex                        Sex                    `xml:"sex"`
+	Citizenship                Citizenship            `xml:"citizenship"`
+	INN                        NullString             `xml:"inn"`
+	PFR                        NullString             `xml:"pfr"`
+	DriverNo                   NullString             `xml:"driverno"`
+	Education                  Education              `xml:"education"`
+	Marital                    Marital                `xml:"marital"`
+	NumChildren                NullString             `xml:"numchildren"`
+	Email                      NullString             `xml:"email"`
+	HomePhone                  NullString             `xml:"homephone"`
+	MobilePhone                NullString             `xml:"mobilephone"`
+	LaCountry                  Citizenship            `xml:"la_country"`
+	LaIndex                    EmptyString            `xml:"la_index"`
+	LaRegion                   EmptyString            `xml:"la_region"`
+	LaDistrict                 EmptyString            `xml:"la_district"`
+	LaCity                     EmptyString            `xml:"la_city"`
+	LaSettlement               EmptyString            `xml:"la_settlement"`
+	LaStreet                   EmptyString            `xml:"la_street"`
+	LaHouse                    EmptyString            `xml:"la_house"`
+	LaBuilding                 EmptyString            `xml:"la_building"`
+	LaStructure                EmptyString            `xml:"la_structure"`
+	LaApartment                EmptyString            `xml:"la_apartment"`
+	LaYears                    NullString             `xml:"la_years"`
+	LaMonth                    NullString             `xml:"la_month"`
+	LaDate                     Date                   `xml:"la_date"`
+	RaPhone                    string                 `xml:"ra_phone"`
+	RaCountry                  Citizenship            `xml:"ra_country"`
+	RaIndex                    EmptyString            `xml:"ra_index"`
+	RaRegion                   EmptyString            `xml:"ra_region"`
+	RaDistrict                 EmptyString            `xml:"ra_district"`
+	RaCity                     EmptyString            `xml:"ra_city"`
+	RaSettlement               EmptyString            `xml:"ra_settlement"`
+	RaStreet                   EmptyString            `xml:"ra_street"`
+	RaHouse                    EmptyString            `xml:"ra_house"`
+	RaBuilding                 EmptyString            `xml:"ra_building"`
+	RaStructure                EmptyString            `xml:"ra_structure"`
+	RaApartment                EmptyString            `xml:"ra_apartment"`
+	EmployerName               NullString             `xml:"employername"`
+	EmployerSize               EmployerSize           `xml:"employersize"`
+	BusinessIndustry           BusinessIndustry       `xml:"businessindustry"`
+	Position                   NullString             `xml:"position"`
+	EmploymentYear             NullString             `xml:"employment_year"`
+	EmploymentMonth            NullString             `xml:"employment_month"`
+	EmploymentDate             Date                   `xml:"employment_date"`
+	EmploymentINN              NullString             `xml:"employment_inn"`
+	IncomeProof                IncomeProof            `xml:"incomeproof"`
+	MonthlyIncome              NullString             `xml:"monthlyincome"`
+	BaPhone                    NullString             `xml:"ba_phone"`
+	BaCountry                  Citizenship            `xml:"ba_country"`
+	BaIndex                    EmptyString            `xml:"ba_index"`
+	BaRegion                   EmptyString            `xml:"ba_region"`
+	BaDistrict                 EmptyString            `xml:"ba_district"`
+	BaCity                     EmptyString            `xml:"ba_city"`
+	BaSettlement               EmptyString            `xml:"ba_settlement"`
+	BaStreet                   EmptyString            `xml:"ba_street"`
+	BaHouse                    EmptyString            `xml:"ba_house"`
+	BaBuilding                 EmptyString            `xml:"ba_building"`
+	BaStructure                EmptyString            `xml:"ba_structure"`
+	BaApartment                EmptyString            `xml:"ba_apartment"`
+	ProductType                ProductType            `xml:"producttype"`
+	ProductName                NullString             `xml:"productname"`
+	OriginalChannel            OriginalChannel        `xml:"originalchannel"`
+	ProductSumLimit            NullString             `xml:"productsumlimit"`
+	ProductSumCurrency         SumCurrency            `xml:"productsumcurrency"`
+	DownPaymentAmount          NullString             `xml:"downpaymentamount"`
+	CollateralExistence        CollateralExistence    `xml:"collateralexistence"`
+	CollateralValue            NullString             `xml:"collateralvalue"`
+	PurchaseExistence          PurchaseExistence      `xml:"purchaseexistence"`
+	PurchaseValue              NullString             `xml:"purchasevalue"`
+	PurchaseModel              NullString             `xml:"purchasemodel"`
+	OperatorCode               NullString             `xml:"operator_code"`
+	OperatorName               NullString             `xml:"operator_name"`
+	PosCode                    EmptyString            `xml:"pos_code"`
+	PosPhone                   NullString             `xml:"pos_phone"`
+	PosCountry                 Citizenship            `xml:"pos_country"`
+	PosIndex                   EmptyString            `xml:"pos_index"`
+	PosRegion                  EmptyString            `xml:"pos_region"`
+	PosDistrict                EmptyString            `xml:"pos_district"`
+	PosCity                    EmptyString            `xml:"pos_city"`
+	PosSettlement              EmptyString            `xml:"pos_settlement"`
+	PosStreet                  EmptyString            `xml:"pos_street"`
+	PosHouse                   EmptyString            `xml:"pos_house"`
+	PosBuilding                EmptyString            `xml:"pos_building"`
+	PosStructure               EmptyString            `xml:"pos_structure"`
+	PosApartment               EmptyString            `xml:"pos_apartment"`
+	NewApplicant               NewApplicant           `xml:"newapplicant"`
+	ApplicantType              ApplicantType          `xml:"applicanttype"`
+	ApplicantTypeNum           int64                  `xml:"applicanttypenum"`
+	ResponseIsNeeded           ResponseIsNeeded       `xml:"responseisneeded"`
+	ApplicationStatus          ApplicationStatus      `xml:"applicationstatus"`
+	ApplicantID                EmptyString            `xml:"applicantid"`
+	TradeDate                  Date                   `xml:"tradedate"`
+	InitialSumLimit            NullString             `xml:"initialsumlimit"`
+	InitialSumCurrency         SumCurrency            `xml:"initialsumcurrency"`
+	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus"`
+	ApplicationFraudStatusDesc NullString             `xml:"applicationfraudstatusdescr"`
+	DefaultStatus              DefaultStatus          `xml:"defaultstatus"`
 }
 
 type NewApplicationResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner newApplicationResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"newApplicationResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type OutputVector struct {
-	XMLName          xml.Name      `xml:"http://equifax.ru/FPSPartner outputVector"`
-	Login            string        `xml:"login,omitempty"`
-	Password         string        `xml:"password,omitempty"`
-	PartnerID        string        `xml:"partnerid,omitempty"`
-	ApplicationID    string        `xml:"applicationid,omitempty"`
-	ApplicationDate  time.Time     `xml:"applicationdate,omitempty"`
-	ApplicantType    ApplicantType `xml:"applicanttype,omitempty"`
-	ApplicantTypeNum string        `xml:"applicanttypenum,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ outputVector"`
+	Credential
+	ApplicationID    string        `xml:"applicationid"`
+	ApplicationDate  Time          `xml:"applicationdate"`
+	ApplicantType    ApplicantType `xml:"applicanttype"`
+	ApplicantTypeNum string        `xml:"applicanttypenum"`
 }
 
 type OutputVectorResponse struct {
-	XMLName           xml.Name `xml:"http://equifax.ru/FPSPartner outputVectorResponse"`
-	ApplicationID     string   `xml:"applicationid,omitempty"`
-	Status            Status   `xml:"status,omitempty"`
-	MainRules         string   `xml:"mainrules,omitempty"`
-	MainScoreValue    string   `xml:"mainscorevalue,omitempty"`
-	SpecificRules     string   `xml:"specificrules,omitempty"`
-	ApplicationsFound string   `xml:"applicationsfound,omitempty"`
+	XMLName           xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ outputVectorResponse"`
+	ApplicationID     string   `xml:"applicationid"`
+	Status            Status   `xml:"status"`
+	MainRules         string   `xml:"mainrules"`
+	MainScoreValue    string   `xml:"mainscorevalue"`
+	SpecificRules     string   `xml:"specificrules"`
+	ApplicationsFound string   `xml:"applicationsfound"`
 }
 
 type UpdateCreditStatus struct {
-	XMLName            xml.Name           `xml:"http://equifax.ru/FPSPartner updateCreditStatus"`
-	Login              string             `xml:"login,omitempty"`
-	Password           string             `xml:"password,omitempty"`
-	PartnerID          string             `xml:"partnerid,omitempty"`
-	ApplicationID      string             `xml:"applicationid,omitempty"`
-	ApplicationDate    time.Time          `xml:"applicationdate,omitempty"`
-	ApplicationStatus  ApplicationStatus  `xml:"applicationstatus,omitempty"`
-	ApplicantID        string             `xml:"applicantid,omitempty"`
-	TradeDate          time.Time          `xml:"tradedate,omitempty"`
-	InitialSumLimit    string             `xml:"initialsumlimit,omitempty"`
-	InitialSumCurrency ProductSumCurrency `xml:"initialsumcurrency,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateCreditStatus"`
+	Credential
+	ApplicationID      string            `xml:"applicationid"`
+	ApplicationDate    Time              `xml:"applicationdate"`
+	ApplicationStatus  ApplicationStatus `xml:"applicationstatus"`
+	ApplicantID        string            `xml:"applicantid"`
+	TradeDate          Date              `xml:"tradedate"`
+	InitialSumLimit    string            `xml:"initialsumlimit"`
+	InitialSumCurrency SumCurrency       `xml:"initialsumcurrency"`
 }
 
 type UpdateCreditStatusResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner updateCreditStatusResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateCreditStatusResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type UpdateFraudStatus struct {
-	XMLName                    xml.Name               `xml:"http://equifax.ru/FPSPartner updateFraudStatus"`
-	Login                      string                 `xml:"login,omitempty"`
-	Password                   string                 `xml:"password,omitempty"`
-	PartnerID                  string                 `xml:"partnerid,omitempty"`
-	ApplicationID              string                 `xml:"applicationid,omitempty"`
-	ApplicationDate            time.Time              `xml:"applicationdate,omitempty"`
-	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus,omitempty"`
-	ApplicationFraudStatusDesc string                 `xml:"applicationfraudstatusdescr,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateFraudStatus"`
+	Credential
+	ApplicationID              string                 `xml:"applicationid"`
+	ApplicationDate            Time                   `xml:"applicationdate"`
+	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus"`
+	ApplicationFraudStatusDesc string                 `xml:"applicationfraudstatusdescr"`
 }
 
 type UpdateFraudStatusResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner updateFraudStatusResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateFraudStatusResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type UpdateDefaultStatus struct {
-	XMLName            xml.Name           `xml:"http://equifax.ru/FPSPartner updateDefaultStatus"`
-	Login              string             `xml:"login,omitempty"`
-	Password           string             `xml:"password,omitempty"`
-	PartnerID          string             `xml:"partnerid,omitempty"`
-	ApplicationID      string             `xml:"applicationid,omitempty"`
-	ApplicationDate    time.Time          `xml:"applicationdate,omitempty"`
-	ApplicantID        string             `xml:"applicantid,omitempty"`
-	TradeDate          time.Time          `xml:"tradedate,omitempty"`
-	InitialSumLimit    float32            `xml:"initialsumlimit,omitempty"`
-	InitialSumCurrency ProductSumCurrency `xml:"initialsumcurrency,omitempty"`
-	DefaultStatus      DefaultStatus      `xml:"defaultstatus,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateDefaultStatus"`
+	Credential
+	ApplicationID      string        `xml:"applicationid"`
+	ApplicationDate    Time          `xml:"applicationdate"`
+	ApplicantID        string        `xml:"applicantid"`
+	TradeDate          Date          `xml:"tradedate"`
+	InitialSumLimit    float32       `xml:"initialsumlimit"`
+	InitialSumCurrency SumCurrency   `xml:"initialsumcurrency"`
+	DefaultStatus      DefaultStatus `xml:"defaultstatus"`
 }
 
 type UpdateDefaultStatusResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner updateDefaultStatusResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ updateDefaultStatusResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type ProcessingApplication struct {
-	XMLName          xml.Name         `xml:"http://equifax.ru/FPSPartner processingApplication"`
-	Login            string           `xml:"login,omitempty"`
-	Password         string           `xml:"password,omitempty"`
-	PartnerID        string           `xml:"partnerid,omitempty"`
-	ApplicationID    string           `xml:"applicationid,omitempty"`
-	ApplicationDate  time.Time        `xml:"applicationdate,omitempty"`
-	ApplicantType    ApplicantType    `xml:"applicanttype,omitempty"`
-	ApplicantTypeNum string           `xml:"applicanttypenum,omitempty"`
-	ResponseIsNeeded ResponseIsNeeded `xml:"responseisneeded,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ processingApplication"`
+	Credential
+	ApplicationID    string           `xml:"applicationid"`
+	ApplicationDate  Date             `xml:"applicationdate"`
+	ApplicantType    ApplicantType    `xml:"applicanttype"`
+	ApplicantTypeNum string           `xml:"applicanttypenum"`
+	ResponseIsNeeded ResponseIsNeeded `xml:"responseisneeded"`
 }
 
 type ProcessingApplicationResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner processingApplicationResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ processingApplicationResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type DeleteApplication struct {
-	XMLName          xml.Name      `xml:"http://equifax.ru/FPSPartner deleteApplication"`
-	Login            string        `xml:"login,omitempty"`
-	Password         string        `xml:"password,omitempty"`
-	PartnerID        string        `xml:"partnerid,omitempty"`
-	ApplicationID    string        `xml:"applicationid,omitempty"`
-	ApplicationDate  time.Time     `xml:"applicationdate,omitempty"`
-	ApplicantType    ApplicantType `xml:"applicanttype,omitempty"`
-	ApplicantTypeNum string        `xml:"applicanttypenum,omitempty"`
+	XMLName xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ deleteApplication"`
+	Credential
+	ApplicationID    string        `xml:"applicationid"`
+	ApplicationDate  Date          `xml:"applicationdate"`
+	ApplicantType    ApplicantType `xml:"applicanttype"`
+	ApplicantTypeNum string        `xml:"applicanttypenum"`
 }
 
 type DeleteApplicationResponse struct {
-	XMLName       xml.Name `xml:"http://equifax.ru/FPSPartner deleteApplicationResponse"`
-	ApplicationID string   `xml:"applicationid,omitempty"`
-	Status        Status   `xml:"status,omitempty"`
+	XMLName       xml.Name `xml:"http://schemas.xmlsoap.org/soap/envelope/ deleteApplicationResponse"`
+	ApplicationID string   `xml:"applicationid"`
+	Status        Status   `xml:"status"`
 }
 
 type FPSPartnerClient struct {
-	client *SOAPClient
+	client    *SOAPClient
+	login     string
+	password  string
+	partnerID string
 }
 
-func NewFPSPartnerClient(url string, enabledTLS bool, timeout time.Duration, auth *BasicAuth) *FPSPartnerClient {
-	client := NewSOAPClient(url, enabledTLS, timeout, auth)
+func NewFPSPartnerClient(
+	url string, login string, password string, partnerID string, enabledTLS bool,
+	timeout time.Duration, auth *BasicAuth, debug bool,
+) *FPSPartnerClient {
+	client := NewSOAPClient(url, enabledTLS, timeout, auth, debug)
 	return &FPSPartnerClient{
-		client: client,
+		client:    client,
+		login:     login,
+		password:  password,
+		partnerID: partnerID,
 	}
 }
 
-func (service *FPSPartnerClient) SetHeader(header interface{}) {
-	service.client.SetHeader(header)
+func (s *FPSPartnerClient) SetHeader(header interface{}) {
+	s.client.SetHeader(header)
 }
 
-func (service *FPSPartnerClient) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
+func (s *FPSPartnerClient) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
 	response := new(NewApplicationResponse)
-	err := service.client.Call("#newApplication", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+
+	err := s.client.Call("#newApplication", req, response)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (service *FPSPartnerClient) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
+func (s *FPSPartnerClient) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
 	response := new(OutputVectorResponse)
-	err := service.client.Call("#outputVector", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#outputVector", req, response)
 	if err != nil {
 		return nil, err
 	}
+
 	return response, nil
 }
 
-func (service *FPSPartnerClient) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
+func (s *FPSPartnerClient) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
 	response := new(UpdateCreditStatusResponse)
-	err := service.client.Call("#updateCreditStatus", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#updateCreditStatus", req, response)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (service *FPSPartnerClient) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
+func (s *FPSPartnerClient) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
 	response := new(UpdateFraudStatusResponse)
-	err := service.client.Call("#updateFraudStatus", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#updateFraudStatus", req, response)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (service *FPSPartnerClient) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
+func (s *FPSPartnerClient) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
 	response := new(UpdateDefaultStatusResponse)
-	err := service.client.Call("#updateDefaultStatus", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#updateDefaultStatus", req, response)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (service *FPSPartnerClient) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
+func (s *FPSPartnerClient) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
 	response := new(ProcessingApplicationResponse)
-	err := service.client.Call("#processingApplication", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#processingApplication", req, response)
 	if err != nil {
 		return nil, err
 	}
 	return response, nil
 }
 
-func (service *FPSPartnerClient) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
+func (s *FPSPartnerClient) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
 	response := new(DeleteApplicationResponse)
-	err := service.client.Call("#deleteApplication", req, response)
+	req.Credential = Credential{
+		Login:     s.login,
+		Password:  s.password,
+		PartnerID: s.partnerID,
+	}
+	err := s.client.Call("#deleteApplication", req, response)
 	if err != nil {
 		return nil, err
 	}
