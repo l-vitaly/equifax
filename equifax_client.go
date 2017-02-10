@@ -200,7 +200,7 @@ type OutputVector struct {
 }
 
 type OutputVectorResponse struct {
-	XMLName           xml.Name `xml:"fps:outputVectorResponse"`
+	XMLName           xml.Name `xml:"outputVectorResponse"`
 	ApplicationID     string   `xml:"applicationid"`
 	Status            Status   `xml:"status"`
 	MainRules         string   `xml:"mainrules"`
@@ -222,7 +222,7 @@ type UpdateCreditStatus struct {
 }
 
 type UpdateCreditStatusResponse struct {
-	XMLName       xml.Name `xml:"fps:updateCreditStatusResponse"`
+	XMLName       xml.Name `xml:"updateCreditStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
@@ -237,7 +237,7 @@ type UpdateFraudStatus struct {
 }
 
 type UpdateFraudStatusResponse struct {
-	XMLName       xml.Name `fps:updateFraudStatusResponse"`
+	XMLName       xml.Name `updateFraudStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
@@ -255,7 +255,7 @@ type UpdateDefaultStatus struct {
 }
 
 type UpdateDefaultStatusResponse struct {
-	XMLName       xml.Name `xml:"fps:updateDefaultStatusResponse"`
+	XMLName       xml.Name `xml:"updateDefaultStatusResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
@@ -264,14 +264,14 @@ type ProcessingApplication struct {
 	XMLName xml.Name `xml:"fps:processingApplication"`
 	Credential
 	ApplicationID    string           `xml:"applicationid"`
-	ApplicationDate  Date             `xml:"applicationdate"`
+	ApplicationDate  Time             `xml:"applicationdate"`
 	ApplicantType    ApplicantType    `xml:"applicanttype"`
 	ApplicantTypeNum string           `xml:"applicanttypenum"`
 	ResponseIsNeeded ResponseIsNeeded `xml:"responseisneeded"`
 }
 
 type ProcessingApplicationResponse struct {
-	XMLName       xml.Name `xml:"fps:processingApplicationResponse"`
+	XMLName       xml.Name `xml:"processingApplicationResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
@@ -280,13 +280,13 @@ type DeleteApplication struct {
 	XMLName xml.Name `xml:"fps:deleteApplication"`
 	Credential
 	ApplicationID    string        `xml:"applicationid"`
-	ApplicationDate  Date          `xml:"applicationdate"`
+	ApplicationDate  Time          `xml:"applicationdate"`
 	ApplicantType    ApplicantType `xml:"applicanttype"`
 	ApplicantTypeNum string        `xml:"applicanttypenum"`
 }
 
 type DeleteApplicationResponse struct {
-	XMLName       xml.Name `xml:"fps:deleteApplicationResponse"`
+	XMLName       xml.Name `xml:"deleteApplicationResponse"`
 	ApplicationID string   `xml:"applicationid"`
 	Status        Status   `xml:"status"`
 }
