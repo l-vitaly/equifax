@@ -11,6 +11,16 @@ import (
 	"time"
 )
 
+type Logger interface {
+	Log(keyval ...interface{})
+}
+
+type NullLogger struct {
+}
+
+func (*NullLogger) Log(keyval ...interface{}) {
+}
+
 type SOAPEnvelopeResponse struct {
 	XMLName xml.Name `xml:"Envelope"`
 	Body    SOAPBodyResponse
@@ -114,10 +124,10 @@ type SOAPClient struct {
 	auth      *BasicAuth
 	header    interface{}
 	client    *http.Client
-	debug     bool
+	logger    Logger
 }
 
-func NewSOAPClient(url string, enableTLS bool, timeout time.Duration, auth *BasicAuth, debug bool) *SOAPClient {
+func NewSOAPClient(url string, enableTLS bool, timeout time.Duration, auth *BasicAuth, logger Logger) *SOAPClient {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: enableTLS,
@@ -126,13 +136,18 @@ func NewSOAPClient(url string, enableTLS bool, timeout time.Duration, auth *Basi
 			return net.DialTimeout(network, addr, timeout)
 		},
 	}
+
+	if logger == nil {
+		logger = new(NullLogger)
+	}
+
 	client := &http.Client{Transport: tr}
 	return &SOAPClient{
 		url:       url,
 		enableTLS: enableTLS,
 		auth:      auth,
 		client:    client,
-		debug:     debug,
+		logger:    logger,
 	}
 }
 

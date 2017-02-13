@@ -300,9 +300,9 @@ type FPSPartnerClient struct {
 
 func NewFPSPartnerClient(
 	url string, login string, password string, partnerID string, enabledTLS bool,
-	timeout time.Duration, auth *BasicAuth, debug bool,
+	timeout time.Duration, auth *BasicAuth, logger Logger,
 ) *FPSPartnerClient {
-	client := NewSOAPClient(url, enabledTLS, timeout, auth, debug)
+	client := NewSOAPClient(url, enabledTLS, timeout, auth, logger)
 	return &FPSPartnerClient{
 		client:    client,
 		login:     login,
