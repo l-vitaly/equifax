@@ -18,7 +18,7 @@ type Logger interface {
 type NullLogger struct {
 }
 
-func (*NullLogger) Log(keyvals ...interface{}) {
+func (*NullLogger) Log(keyvals ...interface{}) error {
 }
 
 type SOAPEnvelopeResponse struct {
