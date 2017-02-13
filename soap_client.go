@@ -19,6 +19,7 @@ type NullLogger struct {
 }
 
 func (*NullLogger) Log(keyvals ...interface{}) error {
+    return nil
 }
 
 type SOAPEnvelopeResponse struct {
