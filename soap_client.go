@@ -12,13 +12,13 @@ import (
 )
 
 type Logger interface {
-	Log(keyval ...interface{})
+	Log(keyvals ...interface{}) error
 }
 
 type NullLogger struct {
 }
 
-func (*NullLogger) Log(keyval ...interface{}) {
+func (*NullLogger) Log(keyvals ...interface{}) {
 }
 
 type SOAPEnvelopeResponse struct {
