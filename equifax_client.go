@@ -5,33 +5,19 @@ import (
 	"time"
 )
 
-const RFC_TIME_EQUIFAX = "02.01.2006 15:04:05"
-const RFC_DATE_EQUIFAX = "02.01.2006"
-const SRT_EMPTY = "EMPTY"
-const SRT_NULL = "NULL"
+const timeEquifaxFormat = "02.01.2006 15:04:05"
+const dateEquifaxFormat = "02.01.2006"
+const strEmpty = "EMPTY"
+const Null = "NULL"
 
 type EmptyString string
 
 func (t EmptyString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if t == "" {
-		e.EncodeElement(SRT_EMPTY, start)
+		e.EncodeElement(strEmpty, start)
 		return nil
 	}
 	e.EncodeElement((string)(t), start)
-	return nil
-}
-
-type NullString struct {
-	String string
-	Valid  bool
-}
-
-func (t NullString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	if !t.Valid {
-		e.EncodeElement(SRT_NULL, start)
-		return nil
-	}
-	e.EncodeElement(t.String, start)
 	return nil
 }
 
@@ -40,7 +26,7 @@ type Time struct {
 }
 
 func (et *Time) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	e.EncodeElement(et.Format(RFC_TIME_EQUIFAX), start)
+	e.EncodeElement(et.Format(timeEquifaxFormat), start)
 	return nil
 }
 
@@ -51,10 +37,10 @@ type Date struct {
 func (et *Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if et.IsZero() {
 		emptyDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
-		e.EncodeElement(emptyDate.Format(RFC_DATE_EQUIFAX), start)
+		e.EncodeElement(emptyDate.Format(dateEquifaxFormat), start)
 		return nil
 	}
-	e.EncodeElement(et.Format(RFC_DATE_EQUIFAX), start)
+	e.EncodeElement(et.Format(dateEquifaxFormat), start)
 	return nil
 }
 
@@ -73,29 +59,29 @@ type NewApplication struct {
 	LastName                   string                 `xml:"lastname"`
 	FirstName                  string                 `xml:"firstname"`
 	MiddleName                 EmptyString            `xml:"middlename"`
-	PastLastName               NullString             `xml:"pastlastname"`
+	PastLastName               EmptyString             `xml:"pastlastname"`
 	Birthday                   Date                   `xml:"birthday"`
-	Birthplace                 NullString             `xml:"birthplace"`
+	Birthplace                 EmptyString             `xml:"birthplace"`
 	DocType                    DocType                `xml:"doctype"`
 	DocNo                      string                 `xml:"docno"`
 	DocPlace                   EmptyString            `xml:"docplace"`
 	DocDate                    Date                   `xml:"docdate"`
-	DocCode                    NullString             `xml:"doccode"`
+	DocCode                    EmptyString             `xml:"doccode"`
 	PastDocType                DocType                `xml:"pastdoctype"`
-	PastDocNo                  NullString             `xml:"pastdocno"`
-	PastDocPlace               NullString             `xml:"pastdocplace"`
+	PastDocNo                  EmptyString             `xml:"pastdocno"`
+	PastDocPlace               EmptyString             `xml:"pastdocplace"`
 	PastDocDate                Date                   `xml:"pastdocdate"`
 	Sex                        Sex                    `xml:"sex"`
 	Citizenship                Citizenship            `xml:"citizenship"`
-	INN                        NullString             `xml:"inn"`
-	PFR                        NullString             `xml:"pfr"`
-	DriverNo                   NullString             `xml:"driverno"`
+	INN                        EmptyString             `xml:"inn"`
+	PFR                        EmptyString             `xml:"pfr"`
+	DriverNo                   EmptyString             `xml:"driverno"`
 	Education                  Education              `xml:"education"`
 	Marital                    Marital                `xml:"marital"`
-	NumChildren                NullString             `xml:"numchildren"`
-	Email                      NullString             `xml:"email"`
-	HomePhone                  NullString             `xml:"homephone"`
-	MobilePhone                NullString             `xml:"mobilephone"`
+	NumChildren                EmptyString             `xml:"numchildren"`
+	Email                      EmptyString             `xml:"email"`
+	HomePhone                  EmptyString             `xml:"homephone"`
+	MobilePhone                EmptyString             `xml:"mobilephone"`
 	LaCountry                  Citizenship            `xml:"la_country"`
 	LaIndex                    EmptyString            `xml:"la_index"`
 	LaRegion                   EmptyString            `xml:"la_region"`
@@ -107,10 +93,10 @@ type NewApplication struct {
 	LaBuilding                 EmptyString            `xml:"la_building"`
 	LaStructure                EmptyString            `xml:"la_structure"`
 	LaApartment                EmptyString            `xml:"la_apartment"`
-	LaYears                    NullString             `xml:"la_years"`
-	LaMonth                    NullString             `xml:"la_month"`
+	LaYears                    EmptyString             `xml:"la_years"`
+	LaMonth                    EmptyString             `xml:"la_month"`
 	LaDate                     Date                   `xml:"la_date"`
-	RaPhone                    string                 `xml:"ra_phone"`
+	RaPhone                    EmptyString             `xml:"ra_phone"`
 	RaCountry                  Citizenship            `xml:"ra_country"`
 	RaIndex                    EmptyString            `xml:"ra_index"`
 	RaRegion                   EmptyString            `xml:"ra_region"`
@@ -122,17 +108,17 @@ type NewApplication struct {
 	RaBuilding                 EmptyString            `xml:"ra_building"`
 	RaStructure                EmptyString            `xml:"ra_structure"`
 	RaApartment                EmptyString            `xml:"ra_apartment"`
-	EmployerName               NullString             `xml:"employername"`
+	EmployerName               EmptyString             `xml:"employername"`
 	EmployerSize               EmployerSize           `xml:"employersize"`
 	BusinessIndustry           BusinessIndustry       `xml:"businessindustry"`
-	Position                   NullString             `xml:"position"`
-	EmploymentYear             NullString             `xml:"employment_year"`
-	EmploymentMonth            NullString             `xml:"employment_month"`
+	Position                   EmptyString             `xml:"position"`
+	EmploymentYear             EmptyString             `xml:"employment_year"`
+	EmploymentMonth            EmptyString             `xml:"employment_month"`
 	EmploymentDate             Date                   `xml:"employment_date"`
-	EmploymentINN              NullString             `xml:"employment_inn"`
+	EmploymentINN              EmptyString             `xml:"employment_inn"`
 	IncomeProof                IncomeProof            `xml:"incomeproof"`
-	MonthlyIncome              NullString             `xml:"monthlyincome"`
-	BaPhone                    NullString             `xml:"ba_phone"`
+	MonthlyIncome              EmptyString             `xml:"monthlyincome"`
+	BaPhone                    EmptyString             `xml:"ba_phone"`
 	BaCountry                  Citizenship            `xml:"ba_country"`
 	BaIndex                    EmptyString            `xml:"ba_index"`
 	BaRegion                   EmptyString            `xml:"ba_region"`
@@ -145,20 +131,20 @@ type NewApplication struct {
 	BaStructure                EmptyString            `xml:"ba_structure"`
 	BaApartment                EmptyString            `xml:"ba_apartment"`
 	ProductType                ProductType            `xml:"producttype"`
-	ProductName                NullString             `xml:"productname"`
+	ProductName                EmptyString             `xml:"productname"`
 	OriginalChannel            OriginalChannel        `xml:"originalchannel"`
-	ProductSumLimit            NullString             `xml:"productsumlimit"`
+	ProductSumLimit            EmptyString             `xml:"productsumlimit"`
 	ProductSumCurrency         SumCurrency            `xml:"productsumcurrency"`
-	DownPaymentAmount          NullString             `xml:"downpaymentamount"`
+	DownPaymentAmount          EmptyString             `xml:"downpaymentamount"`
 	CollateralExistence        CollateralExistence    `xml:"collateralexistence"`
-	CollateralValue            NullString             `xml:"collateralvalue"`
+	CollateralValue            EmptyString             `xml:"collateralvalue"`
 	PurchaseExistence          PurchaseExistence      `xml:"purchaseexistence"`
-	PurchaseValue              NullString             `xml:"purchasevalue"`
-	PurchaseModel              NullString             `xml:"purchasemodel"`
-	OperatorCode               NullString             `xml:"operator_code"`
-	OperatorName               NullString             `xml:"operator_name"`
+	PurchaseValue              EmptyString             `xml:"purchasevalue"`
+	PurchaseModel              EmptyString             `xml:"purchasemodel"`
+	OperatorCode               EmptyString             `xml:"operator_code"`
+	OperatorName               EmptyString             `xml:"operator_name"`
 	PosCode                    EmptyString            `xml:"pos_code"`
-	PosPhone                   NullString             `xml:"pos_phone"`
+	PosPhone                   EmptyString             `xml:"pos_phone"`
 	PosCountry                 Citizenship            `xml:"pos_country"`
 	PosIndex                   EmptyString            `xml:"pos_index"`
 	PosRegion                  EmptyString            `xml:"pos_region"`
@@ -177,10 +163,10 @@ type NewApplication struct {
 	ApplicationStatus          ApplicationStatus      `xml:"applicationstatus"`
 	ApplicantID                EmptyString            `xml:"applicantid"`
 	TradeDate                  Date                   `xml:"tradedate"`
-	InitialSumLimit            NullString             `xml:"initialsumlimit"`
+	InitialSumLimit            EmptyString             `xml:"initialsumlimit"`
 	InitialSumCurrency         SumCurrency            `xml:"initialsumcurrency"`
 	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus"`
-	ApplicationFraudStatusDesc NullString             `xml:"applicationfraudstatusdescr"`
+	ApplicationFraudStatusDesc EmptyString             `xml:"applicationfraudstatusdescr"`
 	DefaultStatus              DefaultStatus          `xml:"defaultstatus"`
 }
 
