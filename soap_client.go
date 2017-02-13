@@ -161,9 +161,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return err
 	}
 
-	if s.debug {
-		log.Println(buffer.String())
-	}
+    s.logger.Log("equfax_request", buffer.String())
 
 	req, err := http.NewRequest("POST", s.url, buffer)
 	if err != nil {
@@ -194,9 +192,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return err
 	}
 
-	if s.debug {
-		log.Println(string(rawBody))
-	}
+    s.logger.Log("equfax_response", string(rawBody))
 
 	respEnvelope, err := s.makeResponse(rawBody, response)
 	if err != nil {
