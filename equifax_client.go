@@ -10,6 +10,8 @@ const dateEquifaxFormat = "02.01.2006"
 const strEmpty = "EMPTY"
 const Null = "NULL"
 
+var emptyDate = time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
+
 type EmptyString string
 
 func (t EmptyString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
@@ -36,7 +38,6 @@ type Date struct {
 
 func (et *Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	if et.IsZero() {
-		emptyDate := time.Date(1900, 1, 1, 0, 0, 0, 0, time.Local)
 		e.EncodeElement(emptyDate.Format(dateEquifaxFormat), start)
 		return nil
 	}
@@ -59,29 +60,29 @@ type NewApplication struct {
 	LastName                   string                 `xml:"lastname"`
 	FirstName                  string                 `xml:"firstname"`
 	MiddleName                 EmptyString            `xml:"middlename"`
-	PastLastName               EmptyString             `xml:"pastlastname"`
+	PastLastName               EmptyString            `xml:"pastlastname"`
 	Birthday                   Date                   `xml:"birthday"`
-	Birthplace                 EmptyString             `xml:"birthplace"`
+	Birthplace                 EmptyString            `xml:"birthplace"`
 	DocType                    DocType                `xml:"doctype"`
 	DocNo                      string                 `xml:"docno"`
 	DocPlace                   EmptyString            `xml:"docplace"`
 	DocDate                    Date                   `xml:"docdate"`
-	DocCode                    EmptyString             `xml:"doccode"`
+	DocCode                    EmptyString            `xml:"doccode"`
 	PastDocType                DocType                `xml:"pastdoctype"`
-	PastDocNo                  EmptyString             `xml:"pastdocno"`
-	PastDocPlace               EmptyString             `xml:"pastdocplace"`
+	PastDocNo                  EmptyString            `xml:"pastdocno"`
+	PastDocPlace               EmptyString            `xml:"pastdocplace"`
 	PastDocDate                Date                   `xml:"pastdocdate"`
 	Sex                        Sex                    `xml:"sex"`
 	Citizenship                Citizenship            `xml:"citizenship"`
-	INN                        EmptyString             `xml:"inn"`
-	PFR                        EmptyString             `xml:"pfr"`
-	DriverNo                   EmptyString             `xml:"driverno"`
+	INN                        EmptyString            `xml:"inn"`
+	PFR                        EmptyString            `xml:"pfr"`
+	DriverNo                   EmptyString            `xml:"driverno"`
 	Education                  Education              `xml:"education"`
 	Marital                    Marital                `xml:"marital"`
-	NumChildren                EmptyString             `xml:"numchildren"`
-	Email                      EmptyString             `xml:"email"`
-	HomePhone                  EmptyString             `xml:"homephone"`
-	MobilePhone                EmptyString             `xml:"mobilephone"`
+	NumChildren                EmptyString            `xml:"numchildren"`
+	Email                      EmptyString            `xml:"email"`
+	HomePhone                  EmptyString            `xml:"homephone"`
+	MobilePhone                EmptyString            `xml:"mobilephone"`
 	LaCountry                  Citizenship            `xml:"la_country"`
 	LaIndex                    EmptyString            `xml:"la_index"`
 	LaRegion                   EmptyString            `xml:"la_region"`
@@ -93,10 +94,10 @@ type NewApplication struct {
 	LaBuilding                 EmptyString            `xml:"la_building"`
 	LaStructure                EmptyString            `xml:"la_structure"`
 	LaApartment                EmptyString            `xml:"la_apartment"`
-	LaYears                    EmptyString             `xml:"la_years"`
-	LaMonth                    EmptyString             `xml:"la_month"`
+	LaYears                    EmptyString            `xml:"la_years"`
+	LaMonth                    EmptyString            `xml:"la_month"`
 	LaDate                     Date                   `xml:"la_date"`
-	RaPhone                    EmptyString             `xml:"ra_phone"`
+	RaPhone                    EmptyString            `xml:"ra_phone"`
 	RaCountry                  Citizenship            `xml:"ra_country"`
 	RaIndex                    EmptyString            `xml:"ra_index"`
 	RaRegion                   EmptyString            `xml:"ra_region"`
@@ -108,17 +109,17 @@ type NewApplication struct {
 	RaBuilding                 EmptyString            `xml:"ra_building"`
 	RaStructure                EmptyString            `xml:"ra_structure"`
 	RaApartment                EmptyString            `xml:"ra_apartment"`
-	EmployerName               EmptyString             `xml:"employername"`
+	EmployerName               EmptyString            `xml:"employername"`
 	EmployerSize               EmployerSize           `xml:"employersize"`
 	BusinessIndustry           BusinessIndustry       `xml:"businessindustry"`
-	Position                   EmptyString             `xml:"position"`
-	EmploymentYear             EmptyString             `xml:"employment_year"`
-	EmploymentMonth            EmptyString             `xml:"employment_month"`
+	Position                   EmptyString            `xml:"position"`
+	EmploymentYear             EmptyString            `xml:"employment_year"`
+	EmploymentMonth            EmptyString            `xml:"employment_month"`
 	EmploymentDate             Date                   `xml:"employment_date"`
-	EmploymentINN              EmptyString             `xml:"employment_inn"`
+	EmploymentINN              EmptyString            `xml:"employment_inn"`
 	IncomeProof                IncomeProof            `xml:"incomeproof"`
-	MonthlyIncome              EmptyString             `xml:"monthlyincome"`
-	BaPhone                    EmptyString             `xml:"ba_phone"`
+	MonthlyIncome              EmptyString            `xml:"monthlyincome"`
+	BaPhone                    EmptyString            `xml:"ba_phone"`
 	BaCountry                  Citizenship            `xml:"ba_country"`
 	BaIndex                    EmptyString            `xml:"ba_index"`
 	BaRegion                   EmptyString            `xml:"ba_region"`
@@ -131,20 +132,20 @@ type NewApplication struct {
 	BaStructure                EmptyString            `xml:"ba_structure"`
 	BaApartment                EmptyString            `xml:"ba_apartment"`
 	ProductType                ProductType            `xml:"producttype"`
-	ProductName                EmptyString             `xml:"productname"`
+	ProductName                EmptyString            `xml:"productname"`
 	OriginalChannel            OriginalChannel        `xml:"originalchannel"`
-	ProductSumLimit            EmptyString             `xml:"productsumlimit"`
+	ProductSumLimit            EmptyString            `xml:"productsumlimit"`
 	ProductSumCurrency         SumCurrency            `xml:"productsumcurrency"`
-	DownPaymentAmount          EmptyString             `xml:"downpaymentamount"`
+	DownPaymentAmount          EmptyString            `xml:"downpaymentamount"`
 	CollateralExistence        CollateralExistence    `xml:"collateralexistence"`
-	CollateralValue            EmptyString             `xml:"collateralvalue"`
+	CollateralValue            EmptyString            `xml:"collateralvalue"`
 	PurchaseExistence          PurchaseExistence      `xml:"purchaseexistence"`
-	PurchaseValue              EmptyString             `xml:"purchasevalue"`
-	PurchaseModel              EmptyString             `xml:"purchasemodel"`
-	OperatorCode               EmptyString             `xml:"operator_code"`
-	OperatorName               EmptyString             `xml:"operator_name"`
+	PurchaseValue              EmptyString            `xml:"purchasevalue"`
+	PurchaseModel              EmptyString            `xml:"purchasemodel"`
+	OperatorCode               EmptyString            `xml:"operator_code"`
+	OperatorName               EmptyString            `xml:"operator_name"`
 	PosCode                    EmptyString            `xml:"pos_code"`
-	PosPhone                   EmptyString             `xml:"pos_phone"`
+	PosPhone                   EmptyString            `xml:"pos_phone"`
 	PosCountry                 Citizenship            `xml:"pos_country"`
 	PosIndex                   EmptyString            `xml:"pos_index"`
 	PosRegion                  EmptyString            `xml:"pos_region"`
@@ -163,10 +164,10 @@ type NewApplication struct {
 	ApplicationStatus          ApplicationStatus      `xml:"applicationstatus"`
 	ApplicantID                EmptyString            `xml:"applicantid"`
 	TradeDate                  Date                   `xml:"tradedate"`
-	InitialSumLimit            EmptyString             `xml:"initialsumlimit"`
+	InitialSumLimit            EmptyString            `xml:"initialsumlimit"`
 	InitialSumCurrency         SumCurrency            `xml:"initialsumcurrency"`
 	ApplicationFraudStatus     ApplicationFraudStatus `xml:"applicationfraudstatus"`
-	ApplicationFraudStatusDesc EmptyString             `xml:"applicationfraudstatusdescr"`
+	ApplicationFraudStatusDesc EmptyString            `xml:"applicationfraudstatusdescr"`
 	DefaultStatus              DefaultStatus          `xml:"defaultstatus"`
 }
 
@@ -190,9 +191,9 @@ type OutputVectorResponse struct {
 	ApplicationID     string   `xml:"applicationid"`
 	Status            Status   `xml:"status"`
 	MainRules         string   `xml:"mainrules"`
-	MainScoreValue    string   `xml:"mainscorevalue"`
+	MainScoreValue    int32   `xml:"mainscorevalue,-"`
 	SpecificRules     string   `xml:"specificrules"`
-	ApplicationsFound string   `xml:"applicationsfound"`
+	ApplicationsFound int32   `xml:"applicationsfound,-"`
 }
 
 type UpdateCreditStatus struct {
@@ -235,7 +236,7 @@ type UpdateDefaultStatus struct {
 	ApplicationDate    Time          `xml:"applicationdate"`
 	ApplicantID        string        `xml:"applicantid"`
 	TradeDate          Date          `xml:"tradedate"`
-	InitialSumLimit    float32       `xml:"initialsumlimit"`
+	InitialSumLimit    string        `xml:"initialsumlimit"`
 	InitialSumCurrency SumCurrency   `xml:"initialsumcurrency"`
 	DefaultStatus      DefaultStatus `xml:"defaultstatus"`
 }
