@@ -191,9 +191,9 @@ type OutputVectorResponse struct {
 	ApplicationID     string   `xml:"applicationid"`
 	Status            Status   `xml:"status"`
 	MainRules         string   `xml:"mainrules"`
-	MainScoreValue    int32   `xml:"mainscorevalue,-"`
+	MainScoreValue    int32    `xml:"mainscorevalue,-"`
 	SpecificRules     string   `xml:"specificrules"`
-	ApplicationsFound int32   `xml:"applicationsfound,-"`
+	ApplicationsFound int32    `xml:"applicationsfound,-"`
 }
 
 type UpdateCreditStatus struct {
@@ -278,19 +278,29 @@ type DeleteApplicationResponse struct {
 	Status        Status   `xml:"status"`
 }
 
-type FPSPartnerClient struct {
+type Equifax interface {
+	SetHeader(header interface{})
+	NewApplication(req *NewApplication) (*NewApplicationResponse, error)
+	OutputVector(req *OutputVector) (*OutputVectorResponse, error)
+	UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error)
+	UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error)
+	ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error)
+	DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error)
+}
+
+type equifax struct {
 	client    *SOAPClient
 	login     string
 	password  string
 	partnerID string
 }
 
-func NewFPSPartnerClient(
+func NewEquifax(
 	url string, login string, password string, partnerID string, enabledTLS bool,
 	timeout time.Duration, auth *BasicAuth, logger Logger,
-) *FPSPartnerClient {
+) Equifax {
 	client := NewSOAPClient(url, enabledTLS, timeout, auth, logger)
-	return &FPSPartnerClient{
+	return &equifax{
 		client:    client,
 		login:     login,
 		password:  password,
@@ -298,11 +308,11 @@ func NewFPSPartnerClient(
 	}
 }
 
-func (s *FPSPartnerClient) SetHeader(header interface{}) {
+func (s *equifax) SetHeader(header interface{}) {
 	s.client.SetHeader(header)
 }
 
-func (s *FPSPartnerClient) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
+func (s *equifax) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
 	response := new(NewApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -317,7 +327,7 @@ func (s *FPSPartnerClient) NewApplication(req *NewApplication) (*NewApplicationR
 	return response, nil
 }
 
-func (s *FPSPartnerClient) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
+func (s *equifax) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
 	response := new(OutputVectorResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -332,7 +342,7 @@ func (s *FPSPartnerClient) OutputVector(req *OutputVector) (*OutputVectorRespons
 	return response, nil
 }
 
-func (s *FPSPartnerClient) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
+func (s *equifax) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
 	response := new(UpdateCreditStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -346,7 +356,7 @@ func (s *FPSPartnerClient) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateC
 	return response, nil
 }
 
-func (s *FPSPartnerClient) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
+func (s *equifax) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
 	response := new(UpdateFraudStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -360,7 +370,7 @@ func (s *FPSPartnerClient) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFra
 	return response, nil
 }
 
-func (s *FPSPartnerClient) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
+func (s *equifax) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
 	response := new(UpdateDefaultStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -374,7 +384,7 @@ func (s *FPSPartnerClient) UpdateDefaultStatus(req *UpdateDefaultStatus) (*Updat
 	return response, nil
 }
 
-func (s *FPSPartnerClient) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
+func (s *equifax) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
 	response := new(ProcessingApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -388,7 +398,7 @@ func (s *FPSPartnerClient) ProcessingApplication(req *ProcessingApplication) (*P
 	return response, nil
 }
 
-func (s *FPSPartnerClient) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
+func (s *equifax) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
 	response := new(DeleteApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,
