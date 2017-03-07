@@ -1,0 +1,1166 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified" xmlns:xsd="undefined">
+    <xs:element name="bki_request">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="request" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+            <xs:attribute name="version" use="required" fixed="3.4"/>
+            <xs:attribute name="partnerid" use="required" type="typePartnerID"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="request">
+        <xs:complexType>
+            <xs:sequence>
+                <!-- title part -->
+                <xs:choice>
+                    <!-- private -->
+                    <xs:sequence>
+                        <xs:element name="private" minOccurs="1" maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="lastname" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeFizLastName"/>
+                                    <xs:element name="firstname" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeFizFirstName"/>
+                                    <xs:element name="middlename" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeFizMiddleName"/>
+                                    <xs:element name="gender" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeFizGender"/>
+                                    <xs:element name="birthday" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeFizBirthday"/>
+                                    <xs:element name="birthplace" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeFizBirthplace"/>
+                                    <!-- doc -->
+                                    <xs:element name="doc" minOccurs="1"
+                                                maxOccurs="1">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="doctype"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeFizDocType"/>
+                                                <xs:element name="docno"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeFizDocNo"/>
+                                                <xs:element name="docdate"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeFizDocDate"/>
+                                                <xs:element name="docenddate"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeFizDocEndDate"/>
+                                                <xs:element name="docplace"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeFizDocPlace"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <!-- /doc -->
+                                    <xs:element name="inn" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeFizINN"/>
+                                    <xs:element name="pfno" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeFizPFNo"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <!-- /private -->
+                    <!-- commercial -->
+                    <xs:sequence>
+                        <xs:element name="commercial" minOccurs="1"
+                                    maxOccurs="1">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="fullname" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeJurFullName"/>
+                                    <xs:element name="shortname" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeJurShortName"/>
+                                    <xs:element name="firmname" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeJurFirmName"/>
+                                    <xs:element name="foreignname" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeJurForeignName"/>
+                                    <xs:element name="resident" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeJurResident"/>
+                                    <xs:element name="regcountry" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrCountry"/>
+                                    <xs:element name="phone" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeJurPhone"/>
+                                    <xs:element name="inn" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeJurINN"/>
+                                    <xs:element name="egrn" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeJurEGRN"/>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <!-- /commercial -->
+                </xs:choice>
+                <!-- /title part -->
+
+                <!-- reason -->
+                <!-- /reason -->
+
+                <!-- application -->
+                <xs:element name="reason" type="typeReason"/>
+                <xs:element name="reason_text" type="type_reason_text"
+                            minOccurs="0"/>
+                <xs:element name="application" minOccurs="0" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="consent" minOccurs="1"
+                                        maxOccurs="1" type="typeAppConsent"/>
+                            <xs:element name="consentdate" minOccurs="1"
+                                        maxOccurs="1"
+                                        type="typeAppConsentDate"/>
+                            <xs:element name="consentenddate" type="typeDate"/>
+                            <xs:element name="admcode_inform"
+                                        type="type_admcode_inform"/>
+                            <xs:element name="consent_owner" minOccurs="0"
+                                        type="type_consent_owner"/>
+                            <xs:element name="income" minOccurs="0"
+                                        maxOccurs="1" type="typeAppIncome"/>
+                            <xs:element name="income_frequency" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppIncomeFrequency"/>
+                            <xs:element name="purpose" minOccurs="0"
+                                        maxOccurs="1" type="typeAppPurpose"/>
+                            <xs:element name="purpose_text" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppPurposeText"/>
+                            <xs:element name="application_num" minOccurs="0"
+                                        maxOccurs="1" type="typeAppNum"/>
+                            <xs:element name="application_date" minOccurs="0"
+                                        maxOccurs="1" type="typeAppDate"/>
+                            <xs:element name="cred_type" minOccurs="0"
+                                        maxOccurs="1" type="typeAppCredType"/>
+                            <xs:element name="cred_currency" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredCurrency"/>
+                            <xs:element name="cred_sum" minOccurs="0"
+                                        maxOccurs="1" type="typeAppCredSum"/>
+                            <xs:element name="cred_deposit" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredDeposit"/>
+                            <xs:element name="cred_last_payment" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredLastPayment"/>
+                            <xs:element name="cred_sum_payment" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredSumPayment"/>
+                            <xs:element name="cred_frequency_payment"
+                                        minOccurs="0" maxOccurs="1"
+                                        type="typeAppCredFrequencyPayment"/>
+                            <xs:element name="cred_duration" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredDuration"/>
+                            <xs:element name="cred_security" minOccurs="0"
+                                        maxOccurs="1"
+                                        type="typeAppCredSecurity"/>
+                            <xs:element name="comment" minOccurs="0"
+                                        maxOccurs="1" type="typeAppComment"/>
+
+                            <xs:choice>
+                                <xs:sequence>
+                                    <!-- private -->
+                                    <xs:element name="private" minOccurs="0"
+                                                maxOccurs="1">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="citizenship"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivateCitizenship"/>
+                                                <xs:element name="marriage"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivateMarriage"/>
+                                                <xs:element
+                                                    name="dependants_bel18"
+                                                    minOccurs="0" maxOccurs="1"
+                                                    type="typeAppPrivateDependants_bel18"/>
+                                                <xs:element
+                                                    name="dependants_und18"
+                                                    minOccurs="0" maxOccurs="1"
+                                                    type="typeAppPrivateDependants_und18"/>
+                                                <xs:element name="education"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivateEducation"/>
+                                                <xs:element name="phone_mobile"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivatePhoneMobile"/>
+                                                <xs:element name="phone_home"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivatePhoneHome"/>
+                                                <xs:element name="phone_work"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivatePhoneWork"/>
+                                                <xs:element name="email"
+                                                            minOccurs="0"
+                                                            maxOccurs="1"
+                                                            type="typeAppPrivateEmail"/>
+                                                <!-- employment -->
+                                                <xs:element name="employment"
+                                                            minOccurs="0"
+                                                            maxOccurs="unbounded">
+                                                    <xs:complexType>
+                                                        <xs:sequence>
+                                                            <xs:element
+                                                                name="current"
+                                                                minOccurs="1"
+                                                                maxOccurs="1"
+                                                                type="typeAppEmploymentCurrent"/>
+                                                            <xs:element
+                                                                name="duration"
+                                                                minOccurs="1"
+                                                                maxOccurs="1"
+                                                                type="typeAppEmploymentDuration"/>
+                                                            <xs:element
+                                                                name="type"
+                                                                minOccurs="1"
+                                                                maxOccurs="1"
+                                                                type="typeAppEmploymentType"/>
+                                                            <xs:element
+                                                                name="profession"
+                                                                minOccurs="1"
+                                                                maxOccurs="1"
+                                                                type="typeAppEmploymentProfession"/>
+                                                            <xs:element
+                                                                name="profession_text"
+                                                                minOccurs="0"
+                                                                maxOccurs="1"
+                                                                type="typeAppEmploymentProfessionText"/>
+                                                            <!-- company -->
+                                                            <xs:element
+                                                                name="company"
+                                                                minOccurs="0"
+                                                                maxOccurs="1">
+                                                                <xs:complexType>
+                                                                    <xs:sequence>
+                                                                        <xs:element
+                                                                            name="name"
+                                                                            minOccurs="0"
+                                                                            maxOccurs="1"
+                                                                            type="typeAppEmploymentCompanyName"/>
+                                                                        <xs:element
+                                                                            name="state"
+                                                                            minOccurs="1"
+                                                                            maxOccurs="1"
+                                                                            type="typeAppEmploymentCompanyState"/>
+                                                                        <xs:element
+                                                                            name="size"
+                                                                            minOccurs="1"
+                                                                            maxOccurs="1"
+                                                                            type="typeAppEmploymentCompanySize"/>
+                                                                        <xs:element
+                                                                            name="area"
+                                                                            minOccurs="1"
+                                                                            maxOccurs="1"
+                                                                            type="typeAppEmploymentCompanyArea"/>
+                                                                        <xs:element
+                                                                            name="area_text"
+                                                                            minOccurs="0"
+                                                                            maxOccurs="1"
+                                                                            type="typeAppEmploymentCompanyAreaText"/>
+                                                                    </xs:sequence>
+                                                                </xs:complexType>
+                                                            </xs:element>
+                                                            <!-- /company -->
+                                                        </xs:sequence>
+                                                    </xs:complexType>
+                                                </xs:element>
+                                                <!-- /employment -->
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <!-- /private -->
+                                </xs:sequence>
+                                <xs:sequence>
+                                    <!-- commercial -->
+                                    <xs:element name="commercial" minOccurs="0"
+                                                maxOccurs="1">
+                                        <xs:complexType>
+                                            <xs:sequence>
+                                                <xs:element name="company_state"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeAppEmploymentCompanyState"/>
+                                                <xs:element name="company_size"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeAppEmploymentCompanySize"/>
+                                                <xs:element name="company_area"
+                                                            minOccurs="1"
+                                                            maxOccurs="1"
+                                                            type="typeAppEmploymentCompanyArea"/>
+                                                <xs:element
+                                                    name="company_area_text"
+                                                    minOccurs="0" maxOccurs="1"
+                                                    type="typeAppEmploymentCompanyAreaText"/>
+                                                <xs:element
+                                                    name="company_beginning_date"
+                                                    minOccurs="1" maxOccurs="1"
+                                                    type="typeDate"/>
+                                            </xs:sequence>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <!-- /commercial -->
+                                </xs:sequence>
+                            </xs:choice>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <!-- /application -->
+
+                <!-- reg address -->
+                <xs:element name="addr_reg" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="owner" minOccurs="0" maxOccurs="1"
+                                        type="typeAddrOwner"/>
+                            <xs:element name="index" minOccurs="1" maxOccurs="1"
+                                        type="typeAddrIndex"/>
+                            <xs:choice>
+                                <xs:sequence>
+                                    <xs:element name="addr_reg_total"
+                                                minOccurs="1" maxOccurs="1"
+                                                type="typeAddrTotal"/>
+                                </xs:sequence>
+                                <xs:sequence>
+                                    <xs:element name="country" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrCountry"/>
+                                    <xs:element name="region" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrRegion"/>
+                                    <xs:element name="city" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrCity"/>
+                                    <xs:element name="district" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrDistrict"/>
+                                    <xs:element name="street" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrStreet"/>
+                                    <xs:element name="house" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrHouse"/>
+                                    <xs:element name="flat" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrFlat"/>
+                                </xs:sequence>
+                            </xs:choice>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <!-- /reg address -->
+
+                <!-- fact address -->
+                <xs:element name="addr_fact" minOccurs="1" maxOccurs="1">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="owner" minOccurs="0" maxOccurs="1"
+                                        type="typeAddrOwner"/>
+                            <xs:element name="index" minOccurs="1" maxOccurs="1"
+                                        type="typeAddrIndex"/>
+                            <xs:choice>
+                                <xs:sequence>
+                                    <xs:element name="addr_fact_total"
+                                                minOccurs="1" maxOccurs="1"
+                                                type="typeAddrTotal"/>
+                                </xs:sequence>
+                                <xs:sequence>
+                                    <xs:element name="country" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrCountry"/>
+                                    <xs:element name="region" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrRegion"/>
+                                    <xs:element name="city" minOccurs="1"
+                                                maxOccurs="1"
+                                                type="typeAddrCity"/>
+                                    <xs:element name="district" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrDistrict"/>
+                                    <xs:element name="street" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrStreet"/>
+                                    <xs:element name="house" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrHouse"/>
+                                    <xs:element name="flat" minOccurs="0"
+                                                maxOccurs="1"
+                                                type="typeAddrFlat"/>
+                                </xs:sequence>
+                            </xs:choice>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="type" minOccurs="1" maxOccurs="1"
+                            type="typeType"/>
+                <!-- /fact address -->
+            </xs:sequence>
+            <xs:attribute name="num" use="required" type="typeNum"/>
+
+            <xs:attribute name="dateofreport" use="optional" type="typeDate"/>
+        </xs:complexType>
+    </xs:element>
+
+
+    <!-- bki_request -->
+    <xs:simpleType name="typePartnerID">
+        <xs:restriction base="xs:string">
+            <xs:length value="3"/>
+            <xs:pattern value="[a-zA-Z0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typePackageID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="15"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typePackageRecCount">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="4"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- request -->
+    <xs:simpleType name="typeDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeNum">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="15"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- commercial -->
+    <xs:simpleType name="typeJurFullName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#&amp;%]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurShortName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="120"/>
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#&amp;%]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurFirmName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="120"/>
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#&amp;%]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurForeignName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#&amp;%]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurResident">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurPhone">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="150"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurINN">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9]*"/>
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeJurEGRN">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9]*"/>
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /commercial -->
+
+    <!-- title private -->
+    <xs:simpleType name="typeFizLastName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.']*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizFirstName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.']*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizMiddleName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё\- \.']*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizGender">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizBirthday">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizBirthplace">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizINN">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="11"/>
+            <xs:maxLength value="12"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizPFNo">
+        <xs:restriction base="xs:string">
+            <xs:length value="11"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizDriverNo">
+        <xs:restriction base="xs:string">
+            <xs:length value="10"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizMedicalNo">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]*"/>
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typePrivateMobilePhone">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[+]{1}\d{11,14}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- doc -->
+    <xs:simpleType name="typeFizDocType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="7"/>
+            <xs:enumeration value="8"/>
+            <xs:enumeration value="9"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+            <xs:enumeration value="12"/>
+            <xs:enumeration value="13"/>
+            <xs:enumeration value="14"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizDocNo">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="20"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\\/;= ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizDocDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizDocEndDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeFizDocPlace">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /doc -->
+    <!-- /title private -->
+
+    <!-- reason -->
+    <xs:simpleType name="typeReason">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /reason -->
+
+    <!-- application -->
+    <xs:simpleType name="typeAppConsent">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppConsentDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppIncome">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppIncomeFrequency">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPurpose">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="01"/>
+            <xs:enumeration value="02"/>
+            <xs:enumeration value="03"/>
+            <xs:enumeration value="04"/>
+            <xs:enumeration value="05"/>
+            <xs:enumeration value="06"/>
+            <xs:enumeration value="07"/>
+            <xs:enumeration value="08"/>
+            <xs:enumeration value="09"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+            <xs:enumeration value="12"/>
+            <xs:enumeration value="13"/>
+            <xs:enumeration value="14"/>
+            <xs:enumeration value="15"/>
+            <xs:enumeration value="16"/>
+            <xs:enumeration value="17"/>
+            <xs:enumeration value="18"/>
+            <xs:enumeration value="19"/>
+            <xs:enumeration value="20"/>
+            <xs:enumeration value="21"/>
+            <xs:enumeration value="22"/>
+            <xs:enumeration value="23"/>
+            <xs:enumeration value="24"/>
+            <xs:enumeration value="25"/>
+            <xs:enumeration value="98"/>
+            <xs:enumeration value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPurposeText">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppNum">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="40"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppDate">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}[.]\d{2}[.]\d{4}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="00"/>
+            <xs:enumeration value="01"/>
+            <xs:enumeration value="02"/>
+            <xs:enumeration value="03"/>
+            <xs:enumeration value="04"/>
+            <xs:enumeration value="05"/>
+            <xs:enumeration value="06"/>
+            <xs:enumeration value="07"/>
+            <xs:enumeration value="08"/>
+            <xs:enumeration value="09"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+            <xs:enumeration value="12"/>
+            <xs:enumeration value="13"/>
+            <xs:enumeration value="14"/>
+            <xs:enumeration value="15"/>
+            <xs:enumeration value="16"/>
+            <xs:enumeration value="17"/>
+            <xs:enumeration value="18"/>
+            <xs:enumeration value="19"/>
+            <xs:enumeration value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredCurrency">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="810"/>
+            <xs:enumeration value="840"/>
+            <xs:enumeration value="978"/>
+            <xs:enumeration value="756"/>
+            <xs:enumeration value="392"/>
+            <xs:enumeration value="RUR"/>
+            <xs:enumeration value="USD"/>
+            <xs:enumeration value="EUR"/>
+            <xs:enumeration value="CHF"/>
+            <xs:enumeration value="JPY"/>
+            <xs:enumeration value="rur"/>
+            <xs:enumeration value="usd"/>
+            <xs:enumeration value="eur"/>
+            <xs:enumeration value="chf"/>
+            <xs:enumeration value="jpy"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredSum">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredDeposit">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredLastPayment">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredSumPayment">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredFrequencyPayment">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredDuration">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{1,13}[.]\d{0,2}"/>
+            <xs:pattern value="\d{1,13}"/>
+            <xs:pattern value="[.]\d{1,2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppCredSecurity">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="8"/>
+            <xs:enumeration value="9"/>
+            <xs:enumeration value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppComment">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="1500"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- private -->
+    <xs:simpleType name="typeAppPrivateCitizenship">
+        <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+            <xs:pattern value="[a-zA-Z0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivateMarriage">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivateDependants_bel18">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="2"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivateDependants_und18">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="2"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivateEducation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="8"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivatePhoneMobile">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+#*&quot;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivatePhoneHome">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+#*&quot;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivatePhoneWork">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+#*&quot;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppPrivateEmail">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Z0-9\-\._@]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Employment -->
+    <xs:simpleType name="typeAppEmploymentCurrent">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentDuration">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="15"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="7"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentProfession">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="00"/>
+            <xs:enumeration value="01"/>
+            <xs:enumeration value="02"/>
+            <xs:enumeration value="03"/>
+            <xs:enumeration value="04"/>
+            <xs:enumeration value="05"/>
+            <xs:enumeration value="06"/>
+            <xs:enumeration value="07"/>
+            <xs:enumeration value="08"/>
+            <xs:enumeration value="09"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="98"/>
+            <xs:enumeration value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentProfessionText">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- company -->
+    <xs:simpleType name="typeAppEmploymentCompanyName">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentCompanyState">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentCompanySize">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentCompanyArea">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="00"/>
+            <xs:enumeration value="01"/>
+            <xs:enumeration value="02"/>
+            <xs:enumeration value="03"/>
+            <xs:enumeration value="04"/>
+            <xs:enumeration value="05"/>
+            <xs:enumeration value="06"/>
+            <xs:enumeration value="07"/>
+            <xs:enumeration value="08"/>
+            <xs:enumeration value="09"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+            <xs:enumeration value="12"/>
+            <xs:enumeration value="13"/>
+            <xs:enumeration value="14"/>
+            <xs:enumeration value="15"/>
+            <xs:enumeration value="16"/>
+            <xs:enumeration value="17"/>
+            <xs:enumeration value="18"/>
+            <xs:enumeration value="19"/>
+            <xs:enumeration value="20"/>
+            <xs:enumeration value="21"/>
+            <xs:enumeration value="22"/>
+            <xs:enumeration value="23"/>
+            <xs:enumeration value="24"/>
+            <xs:enumeration value="25"/>
+            <xs:enumeration value="98"/>
+            <xs:enumeration value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAppEmploymentCompanyAreaText">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /company -->
+    <!-- /employment -->
+    <!-- /private -->
+    <!-- /application -->
+
+    <!-- address -->
+    <xs:simpleType name="typeAddrOwner">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+            <xs:enumeration value="6"/>
+            <xs:enumeration value="7"/>
+            <xs:enumeration value="8"/>
+            <xs:enumeration value="9"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrIndex">
+        <xs:restriction base="xs:string">
+            <xs:length value="6"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrTotal">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="500"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrCountry">
+        <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+            <xs:pattern value="[a-zA-Z0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrRegion">
+        <xs:restriction base="xs:string">
+            <xs:length value="2"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrCity">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrDistrict">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrStreet">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrHouse">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="100"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="typeAddrFlat">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+            <xs:pattern value="[a-zA-Zа-яА-ЯЁё0-9\-\.,'\\/№:()_|&quot; ]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /address -->
+
+    <xs:simpleType name="typeType">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="15"/>
+            <xs:pattern value="[0-9]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="type_reason_text">
+
+        <xs:restriction base="xs:string">
+
+            <xs:minLength value="1"/>
+
+            <xs:maxLength value="1500"/>
+
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#&amp;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="type_admcode_inform">
+
+        <xs:restriction base="xs:string">
+
+            <xs:enumeration value="0"/>
+
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="type_consent_owner">
+
+        <xs:restriction base="xs:string">
+
+            <xs:minLength value="1"/>
+
+            <xs:maxLength value="3270"/>
+
+            <xs:pattern
+                value="[a-zA-Zа-яА-ЯЁё0-9\- \.,'\\/№():_+|&quot;#?!;&amp;]*"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <!-- /request -->
+    <!-- /bki_request -->
+</xs:schema>
