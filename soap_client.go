@@ -177,7 +177,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		req.Header.Add("SOAPAction", soapAction)
 	}
 
-	req.Header.Set("User-Agent", "equifax-client/0.1")
+	req.Header.Set("User-Agent", "equifaxFraud-client/0.1")
 	req.Close = true
 
 	res, err := s.client.Do(req)

@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-const timeEquifaxFormat = "02.01.2006 15:04:05"
-const dateEquifaxFormat = "02.01.2006"
 const strEmpty = "EMPTY"
 const Null = "NULL"
 
@@ -20,28 +18,6 @@ func (t EmptyString) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 		return nil
 	}
 	e.EncodeElement((string)(t), start)
-	return nil
-}
-
-type Time struct {
-	time.Time
-}
-
-func (et *Time) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	e.EncodeElement(et.Format(timeEquifaxFormat), start)
-	return nil
-}
-
-type Date struct {
-	time.Time
-}
-
-func (et *Date) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
-	if et.IsZero() {
-		e.EncodeElement(emptyDate.Format(dateEquifaxFormat), start)
-		return nil
-	}
-	e.EncodeElement(et.Format(dateEquifaxFormat), start)
 	return nil
 }
 
@@ -278,7 +254,7 @@ type DeleteApplicationResponse struct {
 	Status        Status   `xml:"status"`
 }
 
-type Equifax interface {
+type EquifaxFraud interface {
 	SetHeader(header interface{})
 	NewApplication(req *NewApplication) (*NewApplicationResponse, error)
 	OutputVector(req *OutputVector) (*OutputVectorResponse, error)
@@ -288,19 +264,19 @@ type Equifax interface {
 	DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error)
 }
 
-type equifax struct {
+type equifaxFraud struct {
 	client    *SOAPClient
 	login     string
 	password  string
 	partnerID string
 }
 
-func NewEquifax(
+func NewEquifaxFraud(
 	url string, login string, password string, partnerID string, enabledTLS bool,
 	timeout time.Duration, auth *BasicAuth, logger Logger,
-) Equifax {
+) EquifaxFraud {
 	client := NewSOAPClient(url, enabledTLS, timeout, auth, logger)
-	return &equifax{
+	return &equifaxFraud{
 		client:    client,
 		login:     login,
 		password:  password,
@@ -308,11 +284,11 @@ func NewEquifax(
 	}
 }
 
-func (s *equifax) SetHeader(header interface{}) {
+func (s *equifaxFraud) SetHeader(header interface{}) {
 	s.client.SetHeader(header)
 }
 
-func (s *equifax) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
+func (s *equifaxFraud) NewApplication(req *NewApplication) (*NewApplicationResponse, error) {
 	response := new(NewApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -327,7 +303,7 @@ func (s *equifax) NewApplication(req *NewApplication) (*NewApplicationResponse, 
 	return response, nil
 }
 
-func (s *equifax) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
+func (s *equifaxFraud) OutputVector(req *OutputVector) (*OutputVectorResponse, error) {
 	response := new(OutputVectorResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -342,7 +318,7 @@ func (s *equifax) OutputVector(req *OutputVector) (*OutputVectorResponse, error)
 	return response, nil
 }
 
-func (s *equifax) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
+func (s *equifaxFraud) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStatusResponse, error) {
 	response := new(UpdateCreditStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -356,7 +332,7 @@ func (s *equifax) UpdateCreditStatus(req *UpdateCreditStatus) (*UpdateCreditStat
 	return response, nil
 }
 
-func (s *equifax) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
+func (s *equifaxFraud) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusResponse, error) {
 	response := new(UpdateFraudStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -370,7 +346,7 @@ func (s *equifax) UpdateFraudStatus(req *UpdateFraudStatus) (*UpdateFraudStatusR
 	return response, nil
 }
 
-func (s *equifax) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
+func (s *equifaxFraud) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultStatusResponse, error) {
 	response := new(UpdateDefaultStatusResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -384,7 +360,7 @@ func (s *equifax) UpdateDefaultStatus(req *UpdateDefaultStatus) (*UpdateDefaultS
 	return response, nil
 }
 
-func (s *equifax) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
+func (s *equifaxFraud) ProcessingApplication(req *ProcessingApplication) (*ProcessingApplicationResponse, error) {
 	response := new(ProcessingApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,
@@ -398,7 +374,7 @@ func (s *equifax) ProcessingApplication(req *ProcessingApplication) (*Processing
 	return response, nil
 }
 
-func (s *equifax) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
+func (s *equifaxFraud) DeleteApplication(req *DeleteApplication) (*DeleteApplicationResponse, error) {
 	response := new(DeleteApplicationResponse)
 	req.Credential = Credential{
 		Login:     s.login,

@@ -8,7 +8,7 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	c := equifax.NewFPSPartnerClient(
+	c := equifax.NewEquifaxFraud(
 		"http://10.130.11.151/soap/bank",
 		"",
 		"",
@@ -16,7 +16,7 @@ func TestClient(t *testing.T) {
 		false,
 		15*time.Second,
 		nil,
-		true,
+		nil,
 	)
 	resp, err := c.NewApplication(&equifax.NewApplication{})
 	t.Log(resp, err.(*equifax.SOAPFault).Code)
