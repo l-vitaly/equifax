@@ -30,7 +30,7 @@ type Date struct {
 }
 
 func (et *Date) ToTime() time.Time {
-	return time.Time(et)
+	return time.Time(*et)
 }
 
 func (et *Date) getValue() string {
