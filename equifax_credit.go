@@ -31,7 +31,7 @@ type AddressReg struct {
 	Owner     AddressOwner `xml:"owner"`                    // статус регистрации по данному адресу
 	Index     string       `xml:"index"`                    // индекс
 	AddrTotal string       `xml:"addr_reg_total,omitempty"` // адрес регистрации одной строкой
-	Country   Country  `xml:"country"`                      // страна
+	Country   Country      `xml:"country"`                  // страна
 	Region    Region       `xml:"region"`                   // код региона
 	City      string       `xml:"city"`                     // населенный пункт
 	District  string       `xml:"district,omitempty"`       // район
@@ -45,7 +45,7 @@ type AddressFact struct {
 	Owner     AddressOwner `xml:"owner"`                     // статус регистрации по данному адресу
 	Index     string       `xml:"index"`                     // индекс
 	AddrTotal string       `xml:"addr_fact_total,omitempty"` // адрес фактического местонахождения одной строкой
-	Country   Country  `xml:"country"`                       // страна
+	Country   Country      `xml:"country"`                   // страна
 	Region    Region       `xml:"region"`                    // код региона
 	City      string       `xml:"city"`                      // населенный пункт
 	District  string       `xml:"district,omitempty"`        // район
@@ -75,7 +75,7 @@ type Employment struct {
 
 type ApplicationIndividual struct {
 	XMLName         xml.Name    `xml:"private"`
-	Citizenship     Country `xml:"citizenship,omitempty"`          // гражданство
+	Citizenship     Country     `xml:"citizenship,omitempty"`      // гражданство
 	Marriage        Marital     `xml:"marriage,omitempty"`         // семейное положение
 	DependantsBel18 int         `xml:"dependants_bel18,omitempty"` // количество иждивенцев до 18 лет включительно
 	DependantsUnd18 int         `xml:"dependants_und18,omitempty"` // количество иждивенцев старше 18 лет
@@ -84,7 +84,7 @@ type ApplicationIndividual struct {
 	PhoneHome       string      `xml:"phone_home,omitempty"`       // домашний телефон
 	PhoneWork       string      `xml:"phone_work,omitempty"`       // рабочий телефон
 	Email           string      `xml:"email,omitempty"`            // адрес эл. почты
-	Employment      *Employment                                    // инф. о работе
+	Employment      *Employment // инф. о работе
 }
 
 type ApplicationLegalEntity struct {
@@ -124,16 +124,16 @@ type Application struct {
 }
 
 type LegalEntity struct {
-	XMLName     xml.Name    `xml:"commercial"`
-	FullName    string      `xml:"fullname,omitempty"`    // полное наименование юридического лица
-	ShortName   string      `xml:"shortname,omitempty"`   // сокращенное наименование юридического лица
-	FirmName    string      `xml:"firmname,omitempty"`    // фирменное наименование юридического лица
-	ForeignName string      `xml:"foreignname,omitempty"` // наименование юридического лица на языке народов РФ и (или) иностранном языке
-	Resident    Resident    `xml:"resident"`              // признак резидентства
-	RegCountry  Country `xml:"regcountry"`                // наименование государства регистрации
-	Phone       string      `xml:"phone,omitempty"`       // контактные телефоны
-	INN         string      `xml:"inn,omitempty"`         // ИНН
-	EGRN        string      `xml:"egrn,omitempty"`        // ОГРН
+	XMLName     xml.Name `xml:"commercial"`
+	FullName    string   `xml:"fullname,omitempty"`    // полное наименование юридического лица
+	ShortName   string   `xml:"shortname,omitempty"`   // сокращенное наименование юридического лица
+	FirmName    string   `xml:"firmname,omitempty"`    // фирменное наименование юридического лица
+	ForeignName string   `xml:"foreignname,omitempty"` // наименование юридического лица на языке народов РФ и (или) иностранном языке
+	Resident    Resident `xml:"resident"`              // признак резидентства
+	RegCountry  Country  `xml:"regcountry"`            // наименование государства регистрации
+	Phone       string   `xml:"phone,omitempty"`       // контактные телефоны
+	INN         string   `xml:"inn,omitempty"`         // ИНН
+	EGRN        string   `xml:"egrn,omitempty"`        // ОГРН
 }
 
 type IdentityDocument struct {
