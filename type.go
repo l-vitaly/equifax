@@ -29,10 +29,6 @@ type Date struct {
 	time.Time
 }
 
-func (et *Date) ToTime() time.Time {
-	return time.Time(*et)
-}
-
 func (et *Date) getValue() string {
 	if et.IsZero() {
 		return emptyDate.Format(dateEquifaxFormat)
