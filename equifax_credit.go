@@ -4,7 +4,9 @@ import (
 	"bytes"
 	"encoding/xml"
 	"io"
+	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/l-vitaly/acharset"
 	"github.com/l-vitaly/cryptopro"
@@ -177,8 +179,8 @@ type CreditResponse struct {
 	Version   string       `xml:"version,attr"`
 	PartnerID string       `xml:"partnerid,attr"` // код партнера
 	DateTime  string       `xml:"datetime,attr"`
-	Code      ResponseCode `xml:"response>responsecode"`
-	Text      string       `xml:"response>responsestring"`
+	Code      ResponseCode `xml:"responsecode"`
+	Text      string       `xml:"responsestring"`
 	Data      []byte       `xml:",innerxml"`
 }
 
@@ -190,13 +192,15 @@ type equifaxCredit struct {
 	url       string
 	partnerID string
 	crt       cryptopro.Cert
+	saveReq   bool
 }
 
-func NewEquifaxCredit(url string, partnerID string, crt cryptopro.Cert) EquifaxCredit {
+func NewEquifaxCredit(url string, partnerID string, crt cryptopro.Cert, saveReq bool) EquifaxCredit {
 	return &equifaxCredit{
 		url:       url,
 		partnerID: partnerID,
 		crt:       crt,
+		saveReq:   saveReq,
 	}
 }
 
@@ -239,7 +243,13 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 
 	msg.Close()
 
-	resp, err := http.Post(e.url, "application/octet-stream", bytes.NewReader(dest.Bytes()))
+	reqBytes := dest.Bytes()
+
+	if e.saveReq {
+		ioutil.WriteFile(time.Now().Format("20060102150405")+".sig", reqBytes, 0755)
+	}
+
+	resp, err := http.Post(e.url, "application/octet-stream", bytes.NewReader(reqBytes))
 	if resp.Body != nil {
 		defer resp.Body.Close()
 	}
