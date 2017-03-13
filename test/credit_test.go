@@ -6,21 +6,21 @@ import (
 
 	"github.com/l-vitaly/cryptopro"
 	"github.com/l-vitaly/equifax"
+	"github.com/l-vitaly/gounit"
 )
 
 func TestCredit(t *testing.T) {
+	u := gounit.New(t)
+
 	store, err := cryptopro.SystemStore("MY")
 	defer store.Close()
-	if err != nil {
-		t.Error(err)
-	}
-	crt, err := store.GetByThumb("5f08160e7dca8db7b8b3fd1b055a6c4300c37ba6")
-	defer crt.Close()
-	if err != nil {
-		t.Error(err)
-	}
+	u.AssertNotError(err, "Open Store")
 
-	c := equifax.NewEquifaxCredit("http://10.130.1.2/xml.php", "90J", crt)
+	crt, err := store.GetBySHA1("5f08160e7dca8db7b8b3fd1b055a6c4300c37ba6")
+	defer crt.Close()
+	u.AssertNotError(err, "Get Cert")
+
+	c := equifax.NewEquifaxCredit("http://10.130.1.2/xml.php", "90J", crt, false)
 
 	resp, err := c.Get(&equifax.CreditRequest{
 		Num:          1,
@@ -48,7 +48,7 @@ func TestCredit(t *testing.T) {
 		},
 		AddressFact: &equifax.AddressFact{
 			Index:   "000000",
-			Country: equifax.CitizenshipTypeRU,
+			Country: equifax.CountryTypeRU,
 			City:    "МОСКВА",
 			Region:  equifax.RegionType00,
 			Street:  "6 КВАРТАЛ",
@@ -57,7 +57,7 @@ func TestCredit(t *testing.T) {
 		},
 		AddressReg: &equifax.AddressReg{
 			Index:   "000000",
-			Country: equifax.CitizenshipTypeRU,
+			Country: equifax.CountryTypeRU,
 			City:    "МОСКВА",
 			Region:  equifax.RegionType00,
 			Street:  "6 КВАРТАЛ",
@@ -65,8 +65,8 @@ func TestCredit(t *testing.T) {
 			Flat:    "48",
 		},
 	})
-
-    if resp.Code != equifax.ResponseCodeType1 {
-        t.Errorf("Expected code 1 actual %d", resp.Code)
-    }
+	u.AssertNotError(err, "Get Credit History")
+	u.AssertContains(resp.Code, []equifax.ResponseCode{
+		equifax.ResponseCodeType1, equifax.ResponseCodeType0,
+	}, "Response Code")
 }
