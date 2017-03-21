@@ -250,12 +250,12 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 	}
 
 	resp, err := http.Post(e.url, "application/octet-stream", bytes.NewReader(reqBytes))
-	if resp.Body != nil {
-		defer resp.Body.Close()
-	}
 	if err != nil {
 		return nil, err
 	}
+    if resp.Body != nil {
+        defer resp.Body.Close()
+    }
 	if resp.StatusCode != http.StatusOK {
 		return nil, ErrInvalidRequest
 	}
