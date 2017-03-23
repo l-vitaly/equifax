@@ -205,8 +205,6 @@ func NewEquifaxCredit(url string, partnerID string, crt cryptopro.Cert, saveReq 
 }
 
 func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
-	r.Type = "30033"
-
 	req := bkiRequest{
 		Version:   EquifaxCreditVersion,
 		PartnerID: e.partnerID,
@@ -275,7 +273,6 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 
 	var result *CreditResponse
 	dec := xml.NewDecoder(cBuf)
-	dec.CharsetReader = acharset.CharsetReader
 	err = dec.Decode(&result)
 
 	if err != nil {
