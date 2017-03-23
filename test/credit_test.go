@@ -24,6 +24,7 @@ func TestCredit(t *testing.T) {
 
 	resp, err := c.Get(&equifax.CreditRequest{
 		Num:          1,
+		Type:         "30033",
 		DateOfReport: equifax.Date{time.Now()},
 		Reason:       1,
 		Individual: &equifax.Individual{
@@ -69,4 +70,5 @@ func TestCredit(t *testing.T) {
 	u.AssertContains(resp.Code, []equifax.ResponseCode{
 		equifax.ResponseCodeType1, equifax.ResponseCodeType0,
 	}, "Response Code")
+	u.AssertGreaterThan(0, len(resp.Data), "Data")
 }

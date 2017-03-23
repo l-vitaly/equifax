@@ -11,6 +11,7 @@ import (
 	"github.com/l-vitaly/cryptopro"
 	"github.com/pkg/errors"
 	"golang.org/x/text/encoding/charmap"
+    "github.com/l-vitaly/acharset"
 )
 
 const EquifaxCreditVersion = "3.4"
@@ -272,6 +273,7 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 
 	var result *CreditResponse
 	dec := xml.NewDecoder(cBuf)
+	dec.CharsetReader = acharset.CharsetReader
 	err = dec.Decode(&result)
 
 	if err != nil {
