@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/l-vitaly/acharset"
 	"github.com/l-vitaly/cryptopro"
 	"github.com/pkg/errors"
 	"golang.org/x/text/encoding/charmap"
@@ -251,9 +250,9 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-    if resp.Body != nil {
-        defer resp.Body.Close()
-    }
+	if resp.Body != nil {
+		defer resp.Body.Close()
+	}
 	if resp.StatusCode != http.StatusOK {
 		return nil, ErrInvalidRequest
 	}
