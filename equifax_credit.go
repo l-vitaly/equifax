@@ -179,8 +179,8 @@ type CreditResponse struct {
 	Version   string       `xml:"version,attr"`
 	PartnerID string       `xml:"partnerid,attr"` // код партнера
 	DateTime  string       `xml:"datetime,attr"`
-	Code      ResponseCode `xml:"responsecode"`
-	Text      string       `xml:"responsestring"`
+	Code      ResponseCode `xml:"response>responsecode"`
+	Text      string       `xml:"response>responsestring"`
 	Data      []byte       `xml:",innerxml"`
 }
 
