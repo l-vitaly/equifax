@@ -66,6 +66,7 @@ func TestCredit(t *testing.T) {
 			Flat:    "48",
 		},
 	})
+
 	u.AssertNotError(err, "Get Credit History")
 	u.AssertContains(resp.Code, []equifax.ResponseCode{
 		equifax.ResponseCodeType1, equifax.ResponseCodeType0,
