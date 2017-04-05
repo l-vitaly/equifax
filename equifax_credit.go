@@ -10,6 +10,8 @@ import (
 
 	"github.com/l-vitaly/acharset"
 	"github.com/l-vitaly/cryptopro"
+	"github.com/lestrrat/go-libxml2/parser"
+	"github.com/lestrrat/go-libxml2/xsd"
 	"github.com/pkg/errors"
 	"golang.org/x/text/encoding/charmap"
 )
@@ -221,16 +223,47 @@ type equifaxCredit struct {
 	url       string
 	partnerID string
 	crt       cryptopro.Cert
+	schema    string
 	saveReq   bool
 }
 
-func NewEquifaxCredit(url string, partnerID string, crt cryptopro.Cert, saveReq bool) EquifaxCredit {
+func NewEquifaxCredit(url string, partnerID string, crt cryptopro.Cert, schema string, saveReq bool) EquifaxCredit {
 	return &equifaxCredit{
 		url:       url,
 		partnerID: partnerID,
 		crt:       crt,
+		schema:    schema,
 		saveReq:   saveReq,
 	}
+}
+
+func (e *equifaxCredit) requestValidate(reqBytes []byte) error {
+	p := parser.New()
+	doc, err := p.ParseReader(bytes.NewBuffer(reqBytes))
+	if err != nil {
+		return err
+	}
+	defer doc.Free()
+
+	xsdSchema, err := ioutil.ReadFile(e.schema)
+	if err != nil {
+		return err
+	}
+
+	sc, err := xsd.Parse(xsdSchema)
+	if err != nil {
+		return err
+	}
+	defer sc.Free()
+
+	if err := sc.Validate(doc); err != nil {
+		var errorMsg string
+		for _, e := range err.(xsd.SchemaValidationError).Errors() {
+			errorMsg += e.Error() + "/n"
+		}
+		return errors.New(errorMsg)
+	}
+	return nil
 }
 
 func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
@@ -253,6 +286,11 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 		return nil, err
 	}
 	reqBuf = bytes.NewBuffer(reqEncBytes)
+
+    err = e.requestValidate(reqBuf.Bytes())
+    if err != nil {
+        return nil, err
+    }
 
 	dest := new(bytes.Buffer)
 
