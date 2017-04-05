@@ -179,19 +179,31 @@ type TitlePart struct {
 	Data    []byte   `xml:",innerxml"`
 }
 
+type BasePart struct {
+	XMLName xml.Name `xml:"base_part"`
+	Data    []byte   `xml:",innerxml"`
+}
+
+type AddPart struct {
+	XMLName xml.Name `xml:"add_part"`
+	Data    []byte   `xml:",innerxml"`
+}
+
 type Response struct {
 	XMLName   xml.Name     `xml:"response"`
 	Num       string       `xml:"num,attr"`
 	Code      ResponseCode `xml:"responsecode"`
 	Text      string       `xml:"responsestring"`
 	TitlePart TitlePart    `xml:""`
+	BasePart  BasePart     `xml:""`
+	AddPart   AddPart      `xml:""`
 }
 
 type CreditResponse struct {
-	XMLName   xml.Name `xml:"bki_response"`
-	Version   string   `xml:"version,attr"`
-	PartnerID string   `xml:"partnerid,attr"` // код партнера
-	DateTime  string   `xml:"datetime,attr"`
+	XMLName   xml.Name  `xml:"bki_response"`
+	Version   string    `xml:"version,attr"`
+	PartnerID string    `xml:"partnerid,attr"` // код партнера
+	DateTime  string    `xml:"datetime,attr"`
 	Response  *Response `xml:""`
 }
 
