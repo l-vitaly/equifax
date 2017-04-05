@@ -20,9 +20,9 @@ func TestCredit(t *testing.T) {
 	defer crt.Close()
 	u.AssertNotError(err, "Get Cert")
 
-	c := equifax.NewEquifaxCredit("http://10.130.1.2/xml.php", "90J", crt, false)
+	c := equifax.NewEquifaxCredit("http://10.130.1.2/xml.php", "90J", crt, "./schema.xml", false)
 
-	resp, err := c.Get(&equifax.CreditRequest{
+	req := &equifax.CreditRequest{
 		Num:          1,
 		Type:         "30033",
 		DateOfReport: equifax.Date{time.Now()},
@@ -59,13 +59,15 @@ func TestCredit(t *testing.T) {
 		AddressReg: &equifax.AddressReg{
 			Index:   "000000",
 			Country: equifax.CountryTypeRU,
-			City:    "МОСКВА",
+			City:    "",
 			Region:  equifax.RegionType00,
 			Street:  "6 КВАРТАЛ",
 			House:   "17",
 			Flat:    "48",
 		},
-	})
+	}
+
+	resp, err := c.Get(req)
 
 	u.AssertNotError(err, "Get Credit History")
 	u.AssertContains(resp.Response.Code, []equifax.ResponseCode{
