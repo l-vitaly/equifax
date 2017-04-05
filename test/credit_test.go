@@ -71,5 +71,7 @@ func TestCredit(t *testing.T) {
 	u.AssertContains(resp.Response.Code, []equifax.ResponseCode{
 		equifax.ResponseCodeType1, equifax.ResponseCodeType0,
 	}, "Response Code")
-	u.AssertGreaterThan(0, len(resp.Response.TitlePart.Data), "Data")
+	u.AssertGreaterThan(0, len(resp.Response.TitlePart.Data), "TitlePart")
+	u.AssertGreaterThan(0, len(resp.Response.BasePart.Data), "BasePart")
+	u.AssertGreaterThan(0, len(resp.Response.AddPart.Data), "AddPart")
 }
