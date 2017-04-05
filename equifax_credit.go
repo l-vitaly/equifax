@@ -174,14 +174,25 @@ type CreditRequest struct {
 	Type         string       `xml:"type"`                  // идентификатор отчета
 }
 
+type TitlePart struct {
+	XMLName xml.Name `xml:"title_part"`
+	Data    []byte   `xml:",innerxml"`
+}
+
+type Response struct {
+	XMLName   xml.Name     `xml:"response"`
+	Num       string       `xml:"num,attr"`
+	Code      ResponseCode `xml:"responsecode"`
+	Text      string       `xml:"responsestring"`
+	TitlePart TitlePart    `xml:""`
+}
+
 type CreditResponse struct {
-	XMLName   xml.Name     `xml:"bki_response"`
-	Version   string       `xml:"version,attr"`
-	PartnerID string       `xml:"partnerid,attr"` // код партнера
-	DateTime  string       `xml:"datetime,attr"`
-	Code      ResponseCode `xml:"response>responsecode"`
-	Text      string       `xml:"response>responsestring"`
-	Data      []byte       `xml:",innerxml"`
+	XMLName   xml.Name `xml:"bki_response"`
+	Version   string   `xml:"version,attr"`
+	PartnerID string   `xml:"partnerid,attr"` // код партнера
+	DateTime  string   `xml:"datetime,attr"`
+	Response  Response `xml:""`
 }
 
 type EquifaxCredit interface {
