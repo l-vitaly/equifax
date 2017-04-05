@@ -192,7 +192,7 @@ type CreditResponse struct {
 	Version   string   `xml:"version,attr"`
 	PartnerID string   `xml:"partnerid,attr"` // код партнера
 	DateTime  string   `xml:"datetime,attr"`
-	Response  Response `xml:""`
+	Response  *Response `xml:""`
 }
 
 type EquifaxCredit interface {
