@@ -59,7 +59,7 @@ func TestCredit(t *testing.T) {
 		AddressReg: &equifax.AddressReg{
 			Index:   "000000",
 			Country: equifax.CountryTypeRU,
-			City:    "",
+			City:    "МОСКВАs",
 			Region:  equifax.RegionType00,
 			Street:  "6 КВАРТАЛ",
 			House:   "17",
