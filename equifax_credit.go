@@ -189,14 +189,20 @@ type AddPart struct {
 	Data    []byte   `xml:",innerxml"`
 }
 
+type InformationParts struct {
+	XMLName xml.Name `xml:"information_parts"`
+	Data    []byte   `xml:",innerxml"`
+}
+
 type Response struct {
-	XMLName   xml.Name     `xml:"response"`
-	Num       string       `xml:"num,attr"`
-	Code      ResponseCode `xml:"responsecode"`
-	Text      string       `xml:"responsestring"`
-	TitlePart TitlePart    `xml:""`
-	BasePart  BasePart     `xml:""`
-	AddPart   AddPart      `xml:""`
+	XMLName          xml.Name         `xml:"response"`
+	Num              string           `xml:"num,attr"`
+	Code             ResponseCode     `xml:"responsecode"`
+	Text             string           `xml:"responsestring"`
+	TitlePart        TitlePart        `xml:""`
+	BasePart         BasePart         `xml:""`
+	AddPart          AddPart          `xml:""`
+	InformationParts InformationParts `xml:""`
 }
 
 type CreditResponse struct {
