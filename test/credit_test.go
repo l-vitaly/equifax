@@ -7,8 +7,6 @@ import (
 	"github.com/l-vitaly/cryptopro"
 	"github.com/l-vitaly/equifax"
 	"github.com/l-vitaly/gounit"
-    "io/ioutil"
-    "encoding/xml"
 )
 
 func TestCredit(t *testing.T) {
@@ -76,8 +74,4 @@ func TestCredit(t *testing.T) {
 	u.AssertGreaterThan(0, len(resp.Response.TitlePart.Data), "TitlePart")
 	u.AssertGreaterThan(0, len(resp.Response.BasePart.Data), "BasePart")
 	u.AssertGreaterThan(0, len(resp.Response.AddPart.Data), "AddPart")
-
-    respraw, _ := xml.Marshal(&resp)
-
-    ioutil.WriteFile("./req.xml", respraw, 0755)
 }
