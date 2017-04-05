@@ -68,8 +68,8 @@ func TestCredit(t *testing.T) {
 	})
 
 	u.AssertNotError(err, "Get Credit History")
-	u.AssertContains(resp.Code, []equifax.ResponseCode{
+	u.AssertContains(resp.Response.Code, []equifax.ResponseCode{
 		equifax.ResponseCodeType1, equifax.ResponseCodeType0,
 	}, "Response Code")
-	u.AssertGreaterThan(0, len(resp.Data), "Data")
+	u.AssertGreaterThan(0, len(resp.Response.TitlePart.Data), "Data")
 }
