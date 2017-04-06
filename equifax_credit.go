@@ -287,9 +287,11 @@ func (e *equifaxCredit) Get(r *CreditRequest) (*CreditResponse, error) {
 	}
 	reqBuf = bytes.NewBuffer(reqEncBytes)
 
-    err = e.requestValidate(reqBuf.Bytes())
-    if err != nil {
-        return nil, err
+    if e.schema != "" {
+        err = e.requestValidate(reqBuf.Bytes())
+        if err != nil {
+            return nil, err
+        }
     }
 
 	dest := new(bytes.Buffer)
